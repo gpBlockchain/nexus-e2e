@@ -36,7 +36,7 @@ jobs:
         run: |
           cd packages/e2e-web
           npm i
-          npm run start
+          npm run start > node.log 2>&1 &
           cd ../../
       - name: test
         id: test
