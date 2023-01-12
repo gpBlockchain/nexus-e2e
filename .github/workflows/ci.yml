@@ -45,6 +45,13 @@ jobs:
           npm i
           xvfb-run --auto-servernum npm run test
           cd ../../
+      - name: Deploy report page to GitHub Page
+        uses: peaceiris/actions-gh-pages@v3
+        if: success() || failure()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: packages/e2e-web/dist/ 
+          
       - name: Publish e2e web
         if: always()
         uses: actions/upload-artifact@v2
