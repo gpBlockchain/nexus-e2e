@@ -45,7 +45,7 @@ jobs:
           npm i
           xvfb-run --auto-servernum npm run test
           cd ../../
-      - name: Publish reports
+      - name: Publish e2e web
         if: always()
         uses: actions/upload-artifact@v2
         with:
