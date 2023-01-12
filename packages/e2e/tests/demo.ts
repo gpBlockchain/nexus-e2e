@@ -38,7 +38,7 @@ describe('demo', function () {
             () => document.getElementById("getLiveCellResult").innerText !== "",
         );
         let res = await page.$eval("#getLiveCellResult", (e: HTMLSpanElement) => e.innerText)
-        console.log("res:",res)
+        expect(res).to.be.equal("[]")
     });
 
     after(async () => {
