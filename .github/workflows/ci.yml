@@ -53,7 +53,7 @@ jobs:
           publish_dir: ./packages/e2e-web/dist/
           
       - name: Publish e2e web
-        if: always()
+        if: success()
         uses: actions/upload-artifact@v2
         with:
           name: jfoa-build-reports-${{ runner.os }}
