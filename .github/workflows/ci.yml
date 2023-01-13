@@ -50,11 +50,11 @@ jobs:
         if: success() || failure()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/e2e/mochawesome-report/
-
+          publish_dir: ./packages/e2e-web/dist/
+          
       - name: Publish e2e web
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: jfoa-build-reports-${{ runner.os }}
-          path: packages/e2e-web/dist/
+          path: /packages/e2e/mochawesome-report/
