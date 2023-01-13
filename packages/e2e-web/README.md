@@ -20,6 +20,5 @@ Error: error:0308010C:digital envelope routines::unsupported
 ```
 please set `NODE_OPTIONS`  before start e2e-web
 ```shell
-```shell
  export NODE_OPTIONS=--openssl-legacy-provider
 ```

@@ -28,7 +28,7 @@ export type NexusWallet = {
 
 ## test
 
-run test after start e2e-web
+run test after [start e2e-web](packages/e2e-web/README.md#start-e2e)
 ```shell
 npm i 
 npm run test 
