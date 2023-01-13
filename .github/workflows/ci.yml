@@ -50,7 +50,7 @@ jobs:
         if: success() || failure()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/e2e-web/dist/
+          publish_dir: ./packages/e2e/mochawesome-report/
 
       - name: Publish e2e web
         if: always()
