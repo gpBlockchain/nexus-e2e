@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/nexus-e2e/static/js/main.172851fe.js",
+    "index.html": "/nexus-e2e/index.html",
+    "main.172851fe.js.map": "/nexus-e2e/static/js/main.172851fe.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.172851fe.js"
+  ]
+}
