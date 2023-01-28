@@ -52,11 +52,12 @@ jobs:
         with:
           name: jfoa-build-reports-${{ runner.os }}
           path: ./packages/e2e/mochawesome-report/
-      - name: Deploy report page to GitHub Page
-        id: deploy-web
+
+      - name: Deploy with gh-pages
         if: success()
         run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
           cd packages/nexus-web
-          npm run deploy
+          npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
