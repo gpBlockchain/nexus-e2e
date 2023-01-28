@@ -58,3 +58,5 @@ jobs:
         run: |
           cd packages/nexus-web
           npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
