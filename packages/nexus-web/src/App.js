@@ -27,10 +27,10 @@ function App() {
                                         id="getLiveCellButton"
                                         onClick={ckbProvide.getLiveCells}
                                         disabled={!ckbProvide.enableStatus}
-                                    >get_live_cell
+                                    >getLiveCell
                                     </button>
                                     <p className="info-text alert alert-secondary">
-                                        getLiveCell result: <span
+                                        getLiveCellResult: <span
                                         id="getLiveCellResult">{ckbProvide.getLiveCellsResponse}</span>
                                     </p>
 
