@@ -18,7 +18,7 @@ describe('demo', function () {
     })
     it("connect", async () => {
         page = await browser.newPage()
-        await page.goto("http://localhost:9011")
+        await page.goto("http://localhost:3000")
         await page.click("#connectButton")
         const nexusPage = await nexusWallet.getNotificationPage()
         let res1 = await nexusWallet.popup.getHelloNexus(nexusPage);
