@@ -31,13 +31,14 @@ jobs:
           key: ${{ runner.os }}-node_modules-${{ hashFiles('/home/runner/work/**/package-lock.json', '/home/runner/work/**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node_modules-
-      - name: start e2e web
+      - name: start nexus web web
         id: startWeb
         run: |
-          cd packages/e2e-web
+          cd packages/nexus-web
           npm i
           npm run start > node.log 2>&1 &
           cd ../../
+          npm run deploy
       - name: test
         id: test
         run: | 
@@ -45,7 +46,7 @@ jobs:
           npm i
           xvfb-run --auto-servernum npm run test
           cd ../../
-          
+
       - name: Publish e2e test report
         if: success() || failure()
         uses: actions/upload-artifact@v2
@@ -53,8 +54,8 @@ jobs:
           name: jfoa-build-reports-${{ runner.os }}
           path: ./packages/e2e/mochawesome-report/
       - name: Deploy report page to GitHub Page
-        uses: peaceiris/actions-gh-pages@v3
+        id: deploy-web
         if: success()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/e2e-web/dist/
+        run: |
+          cd packages/nexus-web
+          npm run deploy
