@@ -38,7 +38,6 @@ jobs:
           npm i
           npm run start > node.log 2>&1 &
           cd ../../
-          npm run deploy
       - name: test
         id: test
         run: | 
