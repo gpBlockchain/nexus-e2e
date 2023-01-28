@@ -57,6 +57,8 @@ jobs:
         if: success()
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git config --global user.email "linguopeng@cryptape.com"
+          git config --global user.name "gp"
           cd packages/nexus-web
           npm run deploy
         env:
