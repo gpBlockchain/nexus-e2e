@@ -7,7 +7,7 @@ export async function launchWithNexus(
 ): Promise<Browser> {
     return await launch({
         headless: false,
-        // slowMo: 250,
+        slowMo: 10,
         args: [
             `--disable-extensions-except=${option.nexusPath}`,
             `--load-extension=${option.nexusPath}`,
