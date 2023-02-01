@@ -4,7 +4,7 @@ export const WalletManagerPageTextInfo = {
     CreateANewWallet:"Create a new wallet",
 }
 export const WalletManagerPageXpathInfo = {
-    getSeedByIdx:(num:number)=> `//div[${num}]/span`
+    getSeedByIdx:(num:number)=> `//div/div[${num}]/span`
 }
 export const ImportWalletPageTextInfo = {
     getWorldByIdx: (num:number)=> `Word ${num}`,
