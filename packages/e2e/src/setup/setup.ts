@@ -23,10 +23,8 @@ export async function setUpNexus(browser:BrowserContext,nexusSetUpOptions:NexusS
     return nex
 }
 
-async function getExtensionId(browser:BrowserContext):Promise<string>{
+export async function getExtensionId(browser:BrowserContext):Promise<string>{
     // get extension targe
-    await browser.backgroundPages().forEach(page=>console.log(page.url()))
-
     let [background] = browser.serviceWorkers();
     if (!background) background = await browser.waitForEvent('serviceworker');
     // from chrome-extension://ebabfojjjcgoninaddkcccjnpjngllkd/popup.html get ebabfojjjcgoninaddkcccjnpjngllkd

@@ -15,5 +15,6 @@ export const CreateANewWalletPageTextInfo = {
     back:"Back",
     next:"Next",
     NewPassword:"New password(8 character min)",
-    ConfirmPassword:"Confirm password"
+    ConfirmPassword:"Confirm password",
+    Create:"Create"
 }

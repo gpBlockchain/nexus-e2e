@@ -1,19 +1,23 @@
 import {NexusWallet, PopupPageHelper, WalletManagerHelper} from "../types";
 import {NexusUrl} from "./const";
 import {PopupPageLocatorInfo} from "./page/popup-page";
-import {
-    CreateANewWalletPageTextInfo,
-    ImportWalletPageTextInfo,
-    WalletManagerPageTextInfo,
-    WalletManagerPageXpathInfo
-} from "./page/wallet-manager-page";
+
 import {NotificationPageTextInfo} from "./page/notification-page";
 import {BrowserContext, Page} from "playwright";
-import {getDocument} from "@playwright-testing-library/test";
-import {Sleep} from "../../tests/demo";
+
+import {
+    clickCreateNewWallet,
+    clickNext,
+    confirmPasswd,
+    fullCheckSeeds,
+    fullPasswd,
+    getSeeds
+} from "./helper/createANewWallet";
+import {clickImportWallet, clickRecovery, inputMnemonic, inputPasswd} from "./helper/importWallet";
+import {Sleep} from "./util/helper";
 
 
-const EXTENSION_URL_PRE = "chrome-extension://"
+export const EXTENSION_URL_PRE = "chrome-extension://"
 
 export class PopupPageHelperImpl implements PopupPageHelper {
     extensionId: string
@@ -39,71 +43,26 @@ class WalletManagerHelperImpl implements WalletManagerHelper {
 
     createANewWallet = async (page: Page, password: string): Promise<string> => {
         // click create a new wallet
-
-        const select = await page.getByText( WalletManagerPageTextInfo.CreateANewWallet, { exact: true })
-        await select.click()
-        // get seed
-        let seedArr = []
-        for (let i = 1; i <= 12; i++) {
-            const path = await page.locator(WalletManagerPageXpathInfo.getSeedByIdx(i))
-            const data = await path.evaluate((e) => e.innerHTML)
-            seedArr.push(data)
-        }
-        // click next
-        await page.getByText(CreateANewWalletPageTextInfo.next).click()
-        // full seed
-        let checkSeedArr = []
-        for (let i = 1; i <= 12; i++) {
-            const path = await page.locator(WalletManagerPageXpathInfo.getSeedByIdx(i))
-            const data = await path.evaluate((e) => e.innerHTML)
-            checkSeedArr.push(data)
-        }
-        for (let i = 0; i < seedArr.length; i++) {
-            if (seedArr[i] != checkSeedArr[i]) {
-                await page.getByText( seedArr[i]).click()
-            }
-
-        }
-        // click next
-        await page.getByText( CreateANewWalletPageTextInfo.next).click()
-
-        // click password
-        await page.getByText( CreateANewWalletPageTextInfo.NewPassword).type(password)
-        await page.getByText( CreateANewWalletPageTextInfo.ConfirmPassword).type(password)
+        const seedArr = await clickCreateNewWallet(page)
+            .then(page => getSeeds(page))
+        await clickNext(page)
+            .then(page => fullCheckSeeds(page, seedArr))
+            .then(page => clickNext(page))
+            .then(page => fullPasswd(page, password))
+            .then(page => confirmPasswd(page, password))
         return seedArr.join(" ")
     }
 
     getNewPage = () => getExtensionPageByUrl(this.browser, this.extensionId, NexusUrl.walletManager)
 
     importWallet = async (page: Page, mnemonic: string, password: string) => {
-        // click `import wallet`
-
-        await page.getByText( WalletManagerPageTextInfo.ImportWallet).click()
-
-        // input `mnemonic`
-        const mnemonicArr = mnemonic.split(" ")
-        for (let i = 0; i < mnemonicArr.length; i++) {
-            const num = i + 1;
-            await page.getByText( ImportWalletPageTextInfo.getWorldByIdx(num),{exact:true}).type(mnemonicArr[i])
-        }
-        // input password
-        await page.getByText( ImportWalletPageTextInfo.password).type(password)
-
-        // click Recovery
-        await page.getByRole('button', { name: ImportWalletPageTextInfo.recovery }).click()
-
+        await clickImportWallet(page)
+            .then(page => inputMnemonic(page, mnemonic))
+            .then(page => inputPasswd(page, password))
+            .then(page => clickRecovery(page))
     }
 
 }
-
-// export const clickOnButton = async (
-//     page: Page,
-//     text: string,
-//     options?: { timeout?: number; visible?: boolean }
-// ): Promise<void> => {
-//     const button = await getElementByContent(page, text, "button", options);
-//     await button.click();
-// };
 
 
 export class MockNexus implements NexusWallet {
@@ -125,7 +84,7 @@ export class MockNexus implements NexusWallet {
 
     approve = async () => {
         const page = await this.getNotificationPage()
-        await page.getByRole('button', { name:  NotificationPageTextInfo.Approve }).click()
+        await page.getByRole('button', {name: NotificationPageTextInfo.Approve}).click()
     }
 }
 
@@ -136,7 +95,7 @@ export async function getHelloNexusByPage(page: Page): Promise<string> {
 }
 
 async function close(browser: BrowserContext, extensionId: string) {
-    const pages = ( browser.pages())
+    const pages = (browser.pages())
         .filter(page => page.url().includes(extensionId))
     for (let i = 0; i < pages.length; i++) {
         await pages[i].close()
@@ -147,8 +106,7 @@ async function close(browser: BrowserContext, extensionId: string) {
 async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string): Promise<Page> {
     // wait extension page load
 
-    while ( !browser.pages().some(page=> page.url().includes(includeStr)))
-    {
+    while (!browser.pages().some(page => page.url().includes(includeStr))) {
         await Sleep(1000)
     }
 
@@ -158,11 +116,8 @@ async function getNotificationPage(browser: BrowserContext, extensionId: string,
 }
 
 
-async function getExtensionPageByUrl(browser: BrowserContext, extensionId: string, url: string): Promise<Page> {
-    console.log("-")
+export async function getExtensionPageByUrl(browser: BrowserContext, extensionId: string, url: string): Promise<Page> {
     const page = await browser.newPage()
-    await page.goto(`${EXTENSION_URL_PRE}${extensionId}/${url}`, {
-
-    })
+    await page.goto(`${EXTENSION_URL_PRE}${extensionId}/${url}`, {})
     return page;
 }

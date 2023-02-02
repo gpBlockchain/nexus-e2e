@@ -3,6 +3,8 @@ import {setUpNexus} from "../src/setup/setup";
 import {NexusWallet} from "../src/types";
 import {BrowserContext, Page} from "playwright";
 
+import {expectedThrow} from "./utils/util";
+
 
 describe('demo', function () {
 
@@ -14,7 +16,7 @@ describe('demo', function () {
         browser = await launchWithNexus(
             {nexusPath: "./build",
                     playwrightOptions:{
-                        slowMo:150,
+                        slowMo:10,
                         recordVideo: {
                             dir: 'videos/',
                             size: { width: 640, height: 480 },
@@ -33,6 +35,7 @@ describe('demo', function () {
         await page.goto("http://localhost:3000",{})
         await page.click("#connectButton")
         await nexusWallet.approve()
+        await expectedThrow(page.click("#connectButton",{timeout:300}))
     })
 
 
@@ -41,7 +44,4 @@ describe('demo', function () {
     })
 })
 
-export async function Sleep(timeout: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
-}
 
