@@ -43,13 +43,13 @@ class WalletManagerHelperImpl implements WalletManagerHelper {
 
     createANewWallet = async (page: Page, password: string): Promise<string> => {
         // click create a new wallet
-        const seedArr = await clickCreateNewWallet(page)
-            .then(page => getSeeds(page))
+        await clickCreateNewWallet(page)
+        const seedArr =await getSeeds(page)
         await clickNext(page)
-            .then(page => fullCheckSeeds(page, seedArr))
-            .then(page => clickNext(page))
-            .then(page => fullPasswd(page, password))
-            .then(page => confirmPasswd(page, password))
+        await fullCheckSeeds(page, seedArr)
+        await clickNext(page)
+        await fullPasswd(page, password)
+        await confirmPasswd(page, password)
         return seedArr.join(" ")
     }
 
@@ -57,9 +57,9 @@ class WalletManagerHelperImpl implements WalletManagerHelper {
 
     importWallet = async (page: Page, mnemonic: string, password: string) => {
         await clickImportWallet(page)
-            .then(page => inputMnemonic(page, mnemonic))
-            .then(page => inputPasswd(page, password))
-            .then(page => clickRecovery(page))
+        await inputMnemonic(page, mnemonic)
+        await inputPasswd(page, password)
+        await clickRecovery(page)
     }
 
 }

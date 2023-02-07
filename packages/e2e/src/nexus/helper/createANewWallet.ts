@@ -6,9 +6,8 @@ import {
     WalletManagerPageXpathInfo
 } from "../page/wallet-manager-page";
 
-export async function clickCreateNewWallet(page: Page): Promise<Page> {
+export async function clickCreateNewWallet(page: Page) {
     await page.getByText(WalletManagerPageTextInfo.CreateANewWallet, {exact: true}).click()
-    return page
 }
 
 // get seed
@@ -23,13 +22,12 @@ export async function getSeeds(page: Page): Promise<string[]> {
 }
 
 // click next
-export async function clickNext(page: Page): Promise<Page> {
+export async function clickNext(page: Page) {
     await page.getByText(CreateANewWalletPageTextInfo.next).click()
-    return page
 }
 
 // full seed
-export async function fullCheckSeeds(page: Page, seedArr: string[]): Promise<Page> {
+export async function fullCheckSeeds(page: Page, seedArr: string[]) {
     let checkSeedArr = []
     for (let i = 1; i <= 12; i++) {
         const path = await page.locator(WalletManagerPageXpathInfo.getSeedByIdx(i))
@@ -42,23 +40,19 @@ export async function fullCheckSeeds(page: Page, seedArr: string[]): Promise<Pag
         }
 
     }
-    return page;
 }
 
 // click password
-export async function fullPasswd(page: Page, password: string): Promise<Page> {
+export async function fullPasswd(page: Page, password: string) {
     await page.getByText(CreateANewWalletPageTextInfo.NewPassword).type(password)
-    return page;
 }
 
 // confirm passwd
-export async function confirmPasswd(page: Page, password: string): Promise<Page> {
+export async function confirmPasswd(page: Page, password: string) {
     await page.getByText(CreateANewWalletPageTextInfo.ConfirmPassword).type(password)
-    return page;
 }
 
 // click back
-export async function clickBack(page: Page): Promise<Page> {
+export async function clickBack(page: Page) {
     await page.getByText(CreateANewWalletPageTextInfo.back).click()
-    return page;
 }

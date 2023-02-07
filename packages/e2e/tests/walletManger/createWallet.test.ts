@@ -39,13 +39,13 @@ describe('create a wallet', function () {
 
         // click create a new wallet
         const password = "1234567890123456"
-        const seedArr = await clickCreateNewWallet(page)
-            .then(page => getSeeds(page))
+        await clickCreateNewWallet(page)
+        const seedArr = await getSeeds(page)
         await clickNext(page)
-            .then(page => fullCheckSeeds(page, seedArr))
-            .then(page => clickNext(page))
-            .then(page => fullPasswd(page, password))
-            .then(page => confirmPasswd(page, password))
+        await fullCheckSeeds(page, seedArr)
+        await clickNext(page)
+        await fullPasswd(page, password)
+        await confirmPasswd(page, password)
     })
     it('还没输入seed# 无法点击继续', async () => {
 
@@ -56,20 +56,20 @@ describe('create a wallet', function () {
     })
     it('输入不正确顺序的seed#无法点击继续', async () => {
         // input seeds
-        const seedArr = await clickCreateNewWallet(page)
-            .then(page => getSeeds(page))
+        await clickCreateNewWallet(page)
+        const seedArr = await getSeeds(page)
         // input
         await clickNext(page)
-            .then(page => fullCheckSeeds(page, seedArr))
+        await fullCheckSeeds(page, seedArr)
     })
     it('返回查看助记词#清空之前确认一半的助记词', async () => {
-        const seedArr = await clickCreateNewWallet(page)
-            .then(page => getSeeds(page))
+        await clickCreateNewWallet(page)
+        const seedArr = await getSeeds(page)
         await clickNext(page)
-            .then(page => fullCheckSeeds(page, seedArr))
-            .then(page => clickBack(page))
-            .then(page => clickNext(page))
-            .then(page => fullCheckSeeds(page,seedArr))
+        await fullCheckSeeds(page, seedArr)
+        await clickBack(page)
+        await clickNext(page)
+        await fullCheckSeeds(page, seedArr)
     })
     afterEach(async () => {
         await browser.close()
