@@ -52,8 +52,6 @@ jobs:
         with:
           name: jfoa-build-reports-${{ runner.os }}
           path: ./allure-results
-
-      - uses: actions/checkout@v2
       - name: Get Allure history
         uses: actions/checkout@v2
         if: always()
@@ -67,7 +65,7 @@ jobs:
         if: always()
         #id: allure-report
         with:
-          allure_results: allure-results
+          allure_results: /home/runner/work/nexus-e2e/allure-results
           gh_pages: gh-pages-e2e
           #allure_report: allure-report
           allure_history: allure-history
