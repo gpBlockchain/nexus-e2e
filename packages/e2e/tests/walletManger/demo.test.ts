@@ -7,7 +7,7 @@ import {NotificationPageTextInfo} from "../../src/nexus/page/notification-page";
 import {failedTestScreenshot, step} from "../utils/util";
 
 
-describe('allure', function () {
+describe('nexus-web', function () {
     this.timeout(3000_000)
     let browser: BrowserContext;
     let extensionId;
@@ -39,7 +39,7 @@ describe('allure', function () {
 
 
     })
-    it("demo", async () => {
+    it("connect", async () => {
         await step("click connectButton", async () => {
             await page.click("#connectButton")
         })

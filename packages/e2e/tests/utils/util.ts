@@ -50,6 +50,16 @@ export function attachJpeg(name: string, content: Buffer | string) {
         throw TypeError
     }
 }
+export function attachMessage(name:string,content:string){
+    try {
+        allure.attachment(name, content, "text/plain")
+    } catch (TypeError) {
+        if (TypeError.toString().includes("Cannot read properties of undefined (reading 'attachment')")) {
+            return
+        }
+        throw TypeError
+    }
+}
 
 
 function wrap<T>(fun: (...args: any[]) => T): any {
