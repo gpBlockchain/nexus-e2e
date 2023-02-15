@@ -4,67 +4,68 @@ on:
       branches:
         - main
   workflow_dispatch:
+
 jobs:
   allure:
-  name: Generate Allure Report
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
-    - name: Node Cache
-      uses: actions/cache@v2
-      id: npm-and-yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-      with:
-        path: |
-          ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          ~/.npm
-        key: ${{ runner.os }}-node_modules-${{ hashFiles('/home/runner/work/**/package-lock.json', '/home/runner/work/**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-node_modules-
-    - name: start nexus web web
-      id: startWeb
-      run: |
-        cd packages/nexus-web
-        npm i
-        npm run start > node.log 2>&1 &
-        cd ../../
-    - name: test
-      id: test
-      run: |
-        cd packages/e2e
-        npm i
-        xvfb-run --auto-servernum npm run test
-        cd ../../
-        cp -r packages/e2e/allure-results .
-    - uses: actions/checkout@v2
-    - name: Get Allure history
-      uses: actions/checkout@v2
-      if: always()
-      continue-on-error: true
-      with:
-        ref: gh-pages-e2e
-        path: gh-pages-e2e
+    name: Generate Allure Report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Node Cache
+        uses: actions/cache@v2
+        id: npm-and-yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            ~/.npm
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('/home/runner/work/**/package-lock.json', '/home/runner/work/**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+      - name: start nexus web web
+        id: startWeb
+        run: |
+          cd packages/nexus-web
+          npm i
+          npm run start > node.log 2>&1 &
+          cd ../../
+      - name: test
+        id: test
+        run: |
+          cd packages/e2e
+          npm i
+          xvfb-run --auto-servernum npm run test
+          cd ../../
+          cp -r packages/e2e/allure-results .
+      - uses: actions/checkout@v2
+      - name: Get Allure history
+        uses: actions/checkout@v2
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages-e2e
+          path: gh-pages-e2e
 
-    - name: Allure Report action from marketplace
-      uses: simple-elf/allure-report-action@master
-      if: always()
-      #id: allure-report
-      with:
-        allure_results: allure-results
-        gh_pages: gh-pages-e2e
-        #allure_report: allure-report
-        allure_history: allure-history
-        keep_reports: 20
+      - name: Allure Report action from marketplace
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        #id: allure-report
+        with:
+          allure_results: allure-results
+          gh_pages: gh-pages-e2e
+          #allure_report: allure-report
+          allure_history: allure-history
+          keep_reports: 20
 
-    - name: Deploy report to Github Pages
-      if: always()
-      uses: peaceiris/actions-gh-pages@v2
-      env:
-        PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_BRANCH: gh-pages-e2e
-        PUBLISH_DIR: allure-history
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages-e2e
+          PUBLISH_DIR: allure-history
