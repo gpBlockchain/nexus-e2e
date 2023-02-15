@@ -7,7 +7,7 @@ import {NotificationPageTextInfo} from "../../src/nexus/page/notification-page";
 import {failedTestScreenshot, step} from "../utils/util";
 
 
-describe('demo', function () {
+describe('allure', function () {
     this.timeout(3000_000)
     let browser: BrowserContext;
     let extensionId;
@@ -39,13 +39,13 @@ describe('demo', function () {
 
 
     })
-    it("de", async () => {
+    it("demo", async () => {
         await step("click connectButton", async () => {
             await page.click("#connectButton")
         })
         await step("click nexus wallet approve", async () => {
                 const notificationPage = await getNotificationPage(browser, extensionId, NexusUrl.notification)
-                await notificationPage.getByText(NotificationPageTextInfo.Approve+"--").click()
+                await notificationPage.getByText(NotificationPageTextInfo.Approve).click()
             }
         )
     })
