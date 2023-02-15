@@ -1,5 +1,4 @@
 import {makeAutoObservable} from "mobx";
-import { Cell, Script, Transaction } from '@ckb-lumos/lumos';
 
 
 class CkbProviderService {
