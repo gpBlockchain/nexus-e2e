@@ -1,4 +1,11 @@
-allure:
+name: ci-report
+on:
+    push:
+      branches:
+        - main
+  workflow_dispatch:
+jobs:
+  allure:
   name: Generate Allure Report
   runs-on: ubuntu-latest
   steps:
@@ -33,6 +40,7 @@ allure:
         npm i
         xvfb-run --auto-servernum npm run test
         cd ../../
+        cp -r packages/e2e/allure-results .
     - uses: actions/checkout@v2
     - name: Get Allure history
       uses: actions/checkout@v2
