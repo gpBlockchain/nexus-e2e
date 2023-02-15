@@ -3,7 +3,7 @@ on:
     push:
       branches:
         - main
-  
+
 
 jobs:
   allure:
@@ -41,7 +41,18 @@ jobs:
           npm i
           xvfb-run --auto-servernum npm run test
           cd ../../
+      - name: cp report
+        id: cp-report
+        if: success() || failure()
+        run: |
           cp -r packages/e2e/allure-results .
+      - name: Publish e2e test report
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: jfoa-build-reports-${{ runner.os }}
+          path: ./allure-results
+
       - uses: actions/checkout@v2
       - name: Get Allure history
         uses: actions/checkout@v2
