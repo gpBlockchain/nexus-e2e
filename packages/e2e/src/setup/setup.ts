@@ -1,21 +1,33 @@
-import {Browser} from "puppeteer";
 import {NexusSetUpOptions, NexusWallet} from "../types";
-import {MockNexus} from "../nexus";
+import {Nexus} from "../nexus";
+import {BrowserContext} from "playwright";
 
 
-export async function setUpNexus(browser:Browser,nexusSetUpOptions:NexusSetUpOptions):Promise<NexusWallet>{
+export async function setUpNexus(browser: BrowserContext, nexusSetUpOptions: NexusSetUpOptions): Promise<NexusWallet> {
     //todo init nexus
-    if (nexusSetUpOptions.mock){
-        return new MockNexus(browser,await getExtensionId(browser))
+    let nex: NexusWallet
+    nex = new Nexus(browser, await getExtensionId(browser))
+
+    const managePage = await nex.walletManager.getNewPage()
+
+    if (nexusSetUpOptions.seed != undefined) {
+        // create new account
+        await nex.walletManager.importWallet(managePage, nexusSetUpOptions.userName, nexusSetUpOptions.seed, nexusSetUpOptions.passwd)
+        await managePage.close()
+        return nex
     }
+    // load account by seed
+    await nex.walletManager.createANewWallet(managePage, nexusSetUpOptions.userName, nexusSetUpOptions.passwd)
+    await managePage.close()
+    return nex
 }
 
-async function getExtensionId(browser:Browser):Promise<string>{
+export async function getExtensionId(browser: BrowserContext): Promise<string> {
     // get extension targe
-    const backgroundPageTarget = await browser.waitForTarget(
-        target => target.type() === 'background_page' || target.type() === 'service_worker'
-    );
+    let [background] = browser.serviceWorkers();
+    if (!background) background = await browser.waitForEvent('serviceworker');
     // from chrome-extension://ebabfojjjcgoninaddkcccjnpjngllkd/popup.html get ebabfojjjcgoninaddkcccjnpjngllkd
-    return backgroundPageTarget.url().split("/")[2]
+    return background.url().split('/')[2];
+
 }
 

@@ -1,8 +1,8 @@
 name: ci
 on:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   workflow_dispatch:
 
 jobs:
@@ -57,9 +57,7 @@ jobs:
         if: success()
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          git config --global user.email "linguopeng@cryptape.com"
-          git config --global user.name "gp"
           cd packages/nexus-web
           npm run deploy
         env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

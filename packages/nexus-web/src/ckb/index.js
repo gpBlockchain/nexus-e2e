@@ -1,11 +1,14 @@
 
 import React from 'react';
-import {CkbProvide} from "./ckbProvide";
+import {CkbProviderService} from "./ckbProviderService";
+import {InjectedCkbService} from "./injectedCkbService";
 
 
 class RootStore {
     constructor() {
-        this.ckbProvide = new CkbProvide()
+        this.ckbProvide = new CkbProviderService()
+        this.ckbProvide = new CkbProviderService()
+        this.injectedCkbService = new InjectedCkbService();
     }
 }
 
