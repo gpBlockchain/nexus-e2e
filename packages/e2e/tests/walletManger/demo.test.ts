@@ -45,7 +45,7 @@ describe('demo', function () {
         })
         await step("click nexus wallet approve", async () => {
                 const notificationPage = await getNotificationPage(browser, extensionId, NexusUrl.notification)
-                await notificationPage.getByText(NotificationPageTextInfo.Approve).click()
+                await notificationPage.getByText(NotificationPageTextInfo.Approve+"--").click()
             }
         )
     })
