@@ -41,7 +41,7 @@ describe('demo', function () {
         await step("nexusWallet click connect button",async ()=>{
             await nexusWallet.connect()
         })
-        await step("click connectButton",async ()=>{
+        await step("2nd click connectButton",async ()=>{
             await expectedThrow(page.click("#connectButton", {timeout: 300}))
         })
     })
