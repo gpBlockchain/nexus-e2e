@@ -83,7 +83,7 @@ describe('importWallet', function () {
                 await inputMnemonic(page, replace_mn)
             })
             await step("click next", async () => {
-                await clickNext(page)
+                await expectedThrow(clickNext(page))
             })
         })
         it('#2 输入的助记词包含数字 # 无法导入助记词', async () => {
