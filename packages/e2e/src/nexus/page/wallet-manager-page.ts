@@ -2,9 +2,7 @@ export const WalletManagerPageTextInfo = {
     ImportWallet: 'Import wallet',
     CreateANewWallet: 'Create a new wallet',
 }
-export const WalletManagerPageXpathInfo = {
-    getSeedByIdx: (num: number) => `//div/div[${num}]/span`
-}
+
 export const ImportWalletPageTextInfo = {
     getWorldByIdx: (num: number) => `Word ${num}`,
     password: 'Password',
@@ -79,7 +77,7 @@ export const WalletManagerPageTestIdInfo = {
      *
      */
 
-    Seed:"seed",
+    Seed: "seed",
     getSeedByIdx: (num: number) => `seed[${num}]`,
     CopyToClipboard: 'copyToClipboard',
     // back
@@ -115,7 +113,6 @@ export const WalletManagerPageTestIdInfo = {
      *    test-id: back，the 'back button'
      *    test-id: next, the 'next' button
      */
-
 
 
 }

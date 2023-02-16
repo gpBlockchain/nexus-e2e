@@ -13,7 +13,7 @@ export async function launchWithNexus(
             `--load-extension=${option.nexusPath}`
         ],
         permissions: ["clipboard-read"],
-        slowMo:150,
+        // slowMo: 150,
         // // recordVideo: {
         // //     dir: 'videos/',
         // //     size: { width: 640, height: 480 },

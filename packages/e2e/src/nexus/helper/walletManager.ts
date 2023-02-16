@@ -1,7 +1,3 @@
-
-
-
-
 // click Get start
 import {Page} from "playwright";
 import {
@@ -11,28 +7,28 @@ import {
 import {getByTestId} from "./util";
 
 // click get start
-export async function clickGetStarted(page:Page){
-    await getByTestId(page,WalletManagerPageTestIdInfo.GetStarted).click()
+export async function clickGetStarted(page: Page) {
+    await getByTestId(page, WalletManagerPageTestIdInfo.GetStarted).click()
 }
 
 // input  name of user
-export async function inputUserName(page:Page,name:string){
-    await getByTestId(page,WalletManagerPageTestIdInfo.UserName).type(name)
+export async function inputUserName(page: Page, name: string) {
+    await getByTestId(page, WalletManagerPageTestIdInfo.UserName).type(name)
 }
 
-export async function clickBack(page:Page){
+export async function clickBack(page: Page) {
     //todo change data test id
-    await getByTestId(page,WalletManagerPageTestIdInfo.Back).click()
+    await getByTestId(page, WalletManagerPageTestIdInfo.Back).click()
     // await page.getByText(CreateANewWalletPageTextInfo.back).click()
 
 }
 
-export async function clickNext(page:Page){
-    await getByTestId(page,WalletManagerPageTestIdInfo.Next).click()
+export async function clickNext(page: Page) {
+    await getByTestId(page, WalletManagerPageTestIdInfo.Next).click()
 }
 
 // input pwd
-export async function inputPassword(page:Page,passWord:string){
+export async function inputPassword(page: Page, passWord: string) {
 //     //todo change data-test-id
     // await getByTestId(page,ImportWalletPageTextInfo.password).type(password)
     await page.getByText(CreateANewWalletPageTextInfo.NewPassword).type(passWord)
@@ -40,18 +36,18 @@ export async function inputPassword(page:Page,passWord:string){
 }
 
 // confirm pwd
-export async function inputConfirmPassword(page:Page,passWord:string){
+export async function inputConfirmPassword(page: Page, passWord: string) {
     await page.getByText(CreateANewWalletPageTextInfo.ConfirmPassword).type(passWord)
 
     // await getByTestId(page,WalletManagerPageTestIdInfo.ConfirmPassword).type(passWord)
 }
 
 // click agree Terms Of Use
-export async function clickAgreeTermsOfUse(page:Page){
-    await getByTestId(page,WalletManagerPageTestIdInfo.AggreeTermsOfUse).click()
+export async function clickAgreeTermsOfUse(page: Page) {
+    await getByTestId(page, WalletManagerPageTestIdInfo.AggreeTermsOfUse).click()
 }
 
 // click `all done`
-export async function clickDone(page:Page){
-    await getByTestId(page,WalletManagerPageTestIdInfo.Done).click()
+export async function clickDone(page: Page) {
+    await getByTestId(page, WalletManagerPageTestIdInfo.Done).click()
 }

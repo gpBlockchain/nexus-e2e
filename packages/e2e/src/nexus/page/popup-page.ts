@@ -1,7 +1,3 @@
-export const PopupPageLocatorInfo = {
-    helloNexus: '#root > div > h1'
-}
-
 export const HomePageTestIdInfo = {
 
     /**

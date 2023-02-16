@@ -50,7 +50,8 @@ export function attachJpeg(name: string, content: Buffer | string) {
         throw TypeError
     }
 }
-export function attachMessage(name:string,content:string){
+
+export function attachMessage(name: string, content: string) {
     try {
         allure.attachment(name, content, "text/plain")
     } catch (TypeError) {

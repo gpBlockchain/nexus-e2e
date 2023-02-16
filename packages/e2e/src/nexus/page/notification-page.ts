@@ -1,7 +1,7 @@
 export const NotificationPageTextInfo = {
     Approve: "Approve",
-    Connect:"connect",
-    Cancel:"cancel"
+    Connect: "connect",
+    Cancel: "cancel"
 }
 
 export const SignMessagePageTestIdInfo = {
@@ -33,8 +33,8 @@ export const GrantPageTestIdInfo = {
      * test-id: reject the reject button
      */
 
-    Grant:'grant',
-    Reject:'reject'
+    Grant: 'grant',
+    Reject: 'reject'
 
 
 }

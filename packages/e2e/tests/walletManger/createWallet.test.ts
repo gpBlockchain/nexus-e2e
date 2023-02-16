@@ -9,13 +9,12 @@ import {expect} from "chai";
 import {
     clickClipboardAndGet,
     clickCreateNewWallet,
-    clickNext,
     fullCheckSeeds, getSeeds
 } from "../../src/nexus/helper/createANewWallet";
 import {
     clickBack,
     clickDone,
-    clickGetStarted,
+    clickGetStarted, clickNext,
     inputConfirmPassword,
     inputPassword,
     inputUserName

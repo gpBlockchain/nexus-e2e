@@ -1,4 +1,4 @@
-import { clickImportWallet, inputMnemonic} from "../../src/nexus/helper/importWallet";
+import {clickImportWallet, inputMnemonic} from "../../src/nexus/helper/importWallet";
 import {BrowserContext, Page} from "playwright";
 import {launchWithNexus} from "../../src/setup/launch";
 import {getExtensionId} from "../../src/setup/setup";
@@ -108,7 +108,7 @@ describe('importWallet', function () {
                 await inputMnemonic(page, replace_mn)
             })
             await step("click next", async () => {
-                await clickNext(page)
+                await expectedThrow(clickNext(page))
             })
         })
         it("#5 点击返回=> 返回成功", async () => {
@@ -221,14 +221,14 @@ describe('importWallet', function () {
 
                     it.skip(`#3-${i} 输入的用户名包含特殊符号，中文，表情等:${userName} => 报错`, async () => {
                         await step(`input user name:${userName}`, async () => {
-                            await inputUserName(page,userName)
+                            await inputUserName(page, userName)
                         })
                     })
                 }
                 it.skip("#4 输入的用户名过长 => 限制长度", async () => {
                     let userNameL = "123213123123123213132131232131313131313112321312312312321313213123213131313131311232131231231232131321312321313131313131"
                     await step(`input user name:${userNameL}`, async () => {
-                        await inputUserName(page,userNameL)
+                        await inputUserName(page, userNameL)
                     })
                 })
             });
