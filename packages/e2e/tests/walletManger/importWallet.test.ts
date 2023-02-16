@@ -147,7 +147,6 @@ describe('importWallet', function () {
             const passwdArr = ["中文12345678", "👋👋👋👋👋👋👋👋👋👋👋"]
             for (let i = 0; i < passwdArr.length; i++) {
                 it.skip(`#2-${i} 输入的密码:${passwdArr[i]}=>报错`, async () => {
-
                     await step(`input passwd:${passwdArr[i]}`, async () => {
                         await inputPassword(page, passwdArr[i])
                     })
