@@ -89,8 +89,10 @@ describe('importWallet', function () {
         it('#2 输入的助记词包含数字 # 无法导入助记词', async () => {
             const replace_mn = "1234 finite doze dog pat team seek pink punch scale clap computer"
             await step(`input mnemonic:${replace_mn}`, async () => {
+                await inputMnemonic(page, replace_mn)
             })
             await step("click next", async () => {
+                await expectedThrow(clickNext(page))
             })
         })
         it('#3 输入的助记词包含特殊符号 => 无法导入助记词', async () => {
@@ -99,7 +101,7 @@ describe('importWallet', function () {
                 await inputMnemonic(page, replace_mn)
             })
             await step("click next", async () => {
-                await clickNext(page)
+                await expectedThrow(clickNext(page))
             })
         })
         it('#4 词库外的单词https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt => 无法导入助记词', async () => {
