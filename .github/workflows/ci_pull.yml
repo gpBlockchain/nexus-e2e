@@ -44,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: jfoa-build-reports-${{ runner.os }}
-          path: /home/runner/work/nexus-e2e/nexus-e2e/allure-results
+          path: ./packages/e2e/allure-results
