@@ -1,6 +1,5 @@
 import {NexusWallet, PopupPageHelper, WalletManagerHelper} from "../types";
 import {NexusUrl} from "./const";
-import {PopupPageLocatorInfo} from "./page/popup-page";
 
 import {NotificationPageTextInfo} from "./page/notification-page";
 import {BrowserContext, Page} from "playwright";
@@ -8,15 +7,14 @@ import {BrowserContext, Page} from "playwright";
 import {
     clickClipboardAndGet,
     clickCreateNewWallet,
-    clickNext,
     fullCheckSeeds,
 } from "./helper/createANewWallet";
 import {clickConfirm, clickImportWallet, inputMnemonic} from "./helper/importWallet";
 import {Sleep} from "./util/helper";
 import {
-    clickAgreeTermsOfUse, clickBack,
+    clickAgreeTermsOfUse,
     clickDone,
-    clickGetStarted,
+    clickGetStarted, clickNext,
     inputConfirmPassword, inputPassword,
     inputUserName
 } from "./helper/walletManager";
@@ -33,7 +31,6 @@ export class PopupPageHelperImpl implements PopupPageHelper {
         this.extensionId = extensionId
     }
 
-    getHelloNexus = (page: Page) => getHelloNexusByPage(page)
     getNewPage = () => getExtensionPageByUrl(this.browser, this.extensionId, NexusUrl.popup)
 }
 
@@ -105,23 +102,18 @@ export class Nexus implements NexusWallet {
         await page.getByRole('button', {name: NotificationPageTextInfo.Approve}).click()
     }
 
-    cancel = async ()=>{
+    cancel = async () => {
         const page = await this.getNotificationPage()
-        await page.getByRole('button',{name:NotificationPageTextInfo.Cancel}).click()
+        await page.getByRole('button', {name: NotificationPageTextInfo.Cancel}).click()
     }
 
-    connect = async ()=>{
+    connect = async () => {
         const page = await this.getNotificationPage()
-        await page.getByRole('button',{name:NotificationPageTextInfo.Connect}).click()
+        await page.getByRole('button', {name: NotificationPageTextInfo.Connect}).click()
 
     }
 }
 
-
-export async function getHelloNexusByPage(page: Page): Promise<string> {
-    await page.bringToFront()
-    return await page.$eval(PopupPageLocatorInfo.helloNexus, (e) => e.innerHTML);
-}
 
 async function close(browser: BrowserContext, extensionId: string) {
     const pages = (browser.pages())

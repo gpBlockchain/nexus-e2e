@@ -1,6 +1,5 @@
 import {Page} from "playwright";
-import {Logger} from "playwright-core/index";
-import {launchWithNexus} from "./setup/launch";
+import {Logger} from "@playwright/test";
 
 
 export type NexusLaunchOptions = {
@@ -9,9 +8,9 @@ export type NexusLaunchOptions = {
 }
 
 export type NexusSetUpOptions = {
-    userName:string
-    passwd:string
-    seed?:string
+    userName: string
+    passwd: string
+    seed?: string
 }
 
 export type PopupPageHelper = {
@@ -21,21 +20,21 @@ export type PopupPageHelper = {
 
 export type WalletManagerHelper = {
     getNewPage: () => Promise<Page>
-    importWallet:(page:Page,userName,mnemonic,password:string)=>void
-    createANewWallet:(page:Page,userName,password:string)=>Promise<string>
+    importWallet: (page: Page, userName, mnemonic, password: string) => void
+    createANewWallet: (page: Page, userName, password: string) => Promise<string>
 }
 export type NexusWallet = {
     popup: PopupPageHelper;
-    approve:()=>void;
-    connect:()=>void;
-    cancel:()=>void;
-    walletManager:WalletManagerHelper;
+    approve: () => void;
+    connect: () => void;
+    cancel: () => void;
+    walletManager: WalletManagerHelper;
     getNotificationPage: () => Promise<Page>
     close: () => void
 }
 
 
-export type playWrightLaunchOpt={
+export type playWrightLaunchOpt = {
     /**
      * Whether to automatically download all the attachments. Defaults to `true` where all the downloads are accepted.
      */
@@ -87,7 +86,7 @@ export type playWrightLaunchOpt={
      * [page.emulateMedia([options])](https://playwright.dev/docs/api/class-page#page-emulate-media) for more details.
      * Passing `null` resets emulation to system defaults. Defaults to `'light'`.
      */
-    colorScheme?: null|"light"|"dark"|"no-preference";
+    colorScheme?: null | "light" | "dark" | "no-preference";
 
     /**
      * Specify device scale factor (can be thought of as dpr). Defaults to `1`.
@@ -110,7 +109,7 @@ export type playWrightLaunchOpt={
     /**
      * Specify environment variables that will be visible to the browser. Defaults to `process.env`.
      */
-    env?: { [key: string]: string|number|boolean; };
+    env?: { [key: string]: string | number | boolean; };
 
     /**
      * Path to a browser executable to run instead of the bundled one. If `executablePath` is a relative path, then it is
@@ -129,7 +128,7 @@ export type playWrightLaunchOpt={
      * [page.emulateMedia([options])](https://playwright.dev/docs/api/class-page#page-emulate-media) for more details.
      * Passing `null` resets emulation to system defaults. Defaults to `'none'`.
      */
-    forcedColors?: null|"active"|"none";
+    forcedColors?: null | "active" | "none";
 
     geolocation?: {
         /**
@@ -189,7 +188,7 @@ export type playWrightLaunchOpt={
      * If `true`, Playwright does not pass its own configurations args and only uses the ones from `args`. If an array is
      * given, then filters out the given default arguments. Dangerous option; use with care. Defaults to `false`.
      */
-    ignoreDefaultArgs?: boolean|Array<string>;
+    ignoreDefaultArgs?: boolean | Array<string>;
 
     /**
      * Whether to ignore HTTPS errors when sending network requests. Defaults to `false`.
@@ -275,7 +274,7 @@ export type playWrightLaunchOpt={
          * specified, content is stored inline the HAR file as per HAR specification. Defaults to `attach` for `.zip` output
          * files and to `embed` for all other file extensions.
          */
-        content?: "omit"|"embed"|"attach";
+        content?: "omit" | "embed" | "attach";
 
         /**
          * Path on the filesystem to write the HAR file to. If the file name ends with `.zip`, `content: 'attach'` is used by
@@ -287,14 +286,14 @@ export type playWrightLaunchOpt={
          * When set to `minimal`, only record information necessary for routing from HAR. This omits sizes, timing, page,
          * cookies, security and other types of HAR information that are not used when replaying from HAR. Defaults to `full`.
          */
-        mode?: "full"|"minimal";
+        mode?: "full" | "minimal";
 
         /**
          * A glob or regex pattern to filter requests that are stored in the HAR. When a `baseURL` via the context options was
          * provided and the passed URL is a path, it gets merged via the
          * [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
          */
-        urlFilter?: string|RegExp;
+        urlFilter?: string | RegExp;
     };
 
     /**
@@ -332,7 +331,7 @@ export type playWrightLaunchOpt={
      * [page.emulateMedia([options])](https://playwright.dev/docs/api/class-page#page-emulate-media) for more details.
      * Passing `null` resets emulation to system defaults. Defaults to `'no-preference'`.
      */
-    reducedMotion?: null|"reduce"|"no-preference";
+    reducedMotion?: null | "reduce" | "no-preference";
 
     /**
      * Emulates consistent window screen size available inside web page via `window.screen`. Is only used when the
@@ -356,7 +355,7 @@ export type playWrightLaunchOpt={
      *   registered.
      * - `'block'`: Playwright will block all registration of Service Workers.
      */
-    serviceWorkers?: "allow"|"block";
+    serviceWorkers?: "allow" | "block";
 
     /**
      * Slows down Playwright operations by the specified amount of milliseconds. Useful so that you can see what is going
@@ -418,7 +417,7 @@ export type playWrightLaunchOpt={
     /**
      * Emulates consistent viewport for each page. Defaults to an 1280x720 viewport. `null` disables the default viewport.
      */
-    viewport?: null|{
+    viewport?: null | {
         /**
          * page width in pixels.
          */

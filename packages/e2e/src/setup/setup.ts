@@ -4,7 +4,7 @@ import {BrowserContext} from "playwright";
 
 
 export async function setUpNexus(browser: BrowserContext, nexusSetUpOptions: NexusSetUpOptions): Promise<NexusWallet> {
-    //todo init nexus
+
     let nex: NexusWallet
     nex = new Nexus(browser, await getExtensionId(browser))
 
