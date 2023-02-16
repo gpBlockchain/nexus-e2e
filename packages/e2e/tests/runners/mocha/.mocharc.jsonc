@@ -3,7 +3,7 @@
         "tests/runners/mocha/init.js"
     ],
     "spec": [
-        "tests/walletManger/demo.test.ts",
+        "tests/web/demo.test.ts",
         "tests/walletManger/createWallet.test.ts",
         "tests/walletManger/importWallet.test.ts"
     ]

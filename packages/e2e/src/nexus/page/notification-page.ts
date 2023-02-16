@@ -1,5 +1,7 @@
 export const NotificationPageTextInfo = {
-    Approve: "Approve"
+    Approve: "Approve",
+    Connect:"connect",
+    Cancel:"cancel"
 }
 
 export const SignMessagePageTestIdInfo = {

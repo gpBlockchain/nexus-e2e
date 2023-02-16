@@ -11,13 +11,13 @@ import {
     clickNext,
     fullCheckSeeds,
 } from "./helper/createANewWallet";
-import {clickConfirm, clickImportWallet, inputMnemonic, inputPasswd} from "./helper/importWallet";
+import {clickConfirm, clickImportWallet, inputMnemonic} from "./helper/importWallet";
 import {Sleep} from "./util/helper";
 import {
-    clickAgreeTermsOfUse,
+    clickAgreeTermsOfUse, clickBack,
     clickDone,
     clickGetStarted,
-    inputConfirmPassword,
+    inputConfirmPassword, inputPassword,
     inputUserName
 } from "./helper/walletManager";
 
@@ -52,9 +52,10 @@ class WalletManagerHelperImpl implements WalletManagerHelper {
         await clickGetStarted(page)
         await inputUserName(page, userName)
         await clickNext(page)
-        await inputPasswd(page, password)
+        await inputPassword(page, password)
         await inputConfirmPassword(page, password)
-        await clickAgreeTermsOfUse(page)
+        await clickNext(page)
+        // await clickAgreeTermsOfUse(page)
         // const seedArr =await getSeeds(page)
         const seedArr = (await clickClipboardAndGet(page)).split(" ")
         await clickNext(page)
@@ -70,7 +71,7 @@ class WalletManagerHelperImpl implements WalletManagerHelper {
         await clickImportWallet(page)
         await inputMnemonic(page, mnemonic)
         await clickNext(page)
-        await inputPasswd(page, password)
+        await inputPassword(page, password)
         await inputConfirmPassword(page, password)
         await clickAgreeTermsOfUse(page)
         await clickNext(page)
@@ -102,6 +103,17 @@ export class Nexus implements NexusWallet {
     approve = async () => {
         const page = await this.getNotificationPage()
         await page.getByRole('button', {name: NotificationPageTextInfo.Approve}).click()
+    }
+
+    cancel = async ()=>{
+        const page = await this.getNotificationPage()
+        await page.getByRole('button',{name:NotificationPageTextInfo.Cancel}).click()
+    }
+
+    connect = async ()=>{
+        const page = await this.getNotificationPage()
+        await page.getByRole('button',{name:NotificationPageTextInfo.Connect}).click()
+
     }
 }
 

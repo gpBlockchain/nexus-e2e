@@ -1,32 +1,39 @@
 import {
+    CreateANewWalletPageTextInfo,
     ImportWalletPageTextInfo,
     WalletManagerPageTestIdInfo,
     WalletManagerPageTextInfo
 } from "../page/wallet-manager-page";
 import {Page} from "playwright";
+import {getByTestId} from "./util";
 
 // click `import wallet`
 export async function clickImportWallet(page: Page){
-    await page.getByText(WalletManagerPageTextInfo.ImportWallet).click()
+    await page.locator(`[data-test-id="${WalletManagerPageTestIdInfo.ImportWallet}"]`).click()
 }
 
 // input `mnemonic`
 export async function inputMnemonic(page: Page, mnemonic: string){
     const mnemonicArr = mnemonic.split(" ")
-    for (let i = 0; i < mnemonicArr.length; i++) {
-        const num = i + 1
-        await page.getByTestId(WalletManagerPageTestIdInfo.getSeedByIdx(num)).type(mnemonicArr[i])
+    for (let i = 1; i <=mnemonicArr.length; i++) {
+        //todo :change test-id
+        // await page.getByText(`${i}`,{exact:true}).type(mnemonicArr[i-1])
+        await getByTestId(page,WalletManagerPageTestIdInfo.getSeedByIdx(i-1)).type(mnemonicArr[i-1])
     }
 }
 
-// input password
-export async function inputPasswd(page: Page, password: string) {
-    await page.getByText(ImportWalletPageTextInfo.password).type(password)
-}
+// // input password
+// export async function inputPasswd(page: Page, password: string) {
+//     //todo change data-test-id
+//     // await getByTestId(page,ImportWalletPageTextInfo.password).type(password)
+//     await page.getByText(CreateANewWalletPageTextInfo.NewPassword).type(password)
+//
+// }
 
 // click confirm
 export async function clickConfirm(page:Page){
-    await page.getByTestId(WalletManagerPageTestIdInfo.Next).click();
+    await getByTestId(page,WalletManagerPageTestIdInfo.Next).click()
+
 }
 
 // click Recovery

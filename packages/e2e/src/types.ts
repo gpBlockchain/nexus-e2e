@@ -18,6 +18,7 @@ export type PopupPageHelper = {
     getNewPage: () => Promise<Page>
 }
 
+
 export type WalletManagerHelper = {
     getNewPage: () => Promise<Page>
     importWallet:(page:Page,userName,mnemonic,password:string)=>void
@@ -26,6 +27,8 @@ export type WalletManagerHelper = {
 export type NexusWallet = {
     popup: PopupPageHelper;
     approve:()=>void;
+    connect:()=>void;
+    cancel:()=>void;
     walletManager:WalletManagerHelper;
     getNotificationPage: () => Promise<Page>
     close: () => void
