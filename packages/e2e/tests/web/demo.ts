@@ -3,7 +3,7 @@ import {setUpNexus} from "../../src/setup/setup";
 import {NexusWallet} from "../../src/types";
 import {BrowserContext, Page} from "playwright";
 
-import {expectedThrow, step} from "../utils/util";
+import {expectedThrow, failedTestScreenshot, step} from "../utils/util";
 
 
 describe('demo', function () {
@@ -30,7 +30,7 @@ describe('demo', function () {
         })
 
     })
-    it("connect", async () => {
+    it("2nd connect will failed", async () => {
         await step("goto:http://localhost:3000", async () => {
             page = await browser.newPage()
             await page.goto("http://localhost:3000", {})
@@ -41,13 +41,14 @@ describe('demo', function () {
         await step("nexusWallet click connect button",async ()=>{
             await nexusWallet.connect()
         })
-        await step("click connectButton",async ()=>{
+        await step("2nd click connectButton",async ()=>{
             await expectedThrow(page.click("#connectButton", {timeout: 300}))
         })
     })
 
 
     after(async () => {
+        await failedTestScreenshot(this, browser)
         await browser.close();
     })
 })
