@@ -13,7 +13,7 @@ export const ImportWalletPageTextInfo = {
 export const CreateANewWalletPageTextInfo = {
     back: 'Back',
     next: 'Next',
-    NewPassword: 'New password(8 character min)',
+    NewPassword: 'New password (8 characters minimum)',
     ConfirmPassword: 'Confirm password',
     Create: 'Create'
 }
@@ -48,7 +48,7 @@ export const WalletManagerPageTestIdInfo = {
      *
      */
 
-    UserName: 'userName',
+    UserName: 'username',
     Back: 'back',
     Next: 'next',
 
@@ -79,7 +79,8 @@ export const WalletManagerPageTestIdInfo = {
      *
      */
 
-    getSeedByIdx: (num: number) => `seed#${num}`,
+    Seed:"seed",
+    getSeedByIdx: (num: number) => `seed[${num}]`,
     CopyToClipboard: 'copyToClipboard',
     // back
     // next
@@ -114,7 +115,7 @@ export const WalletManagerPageTestIdInfo = {
      *    test-id: back，the 'back button'
      *    test-id: next, the 'next' button
      */
-    
+
 
 
 }
