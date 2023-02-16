@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"broken","Thu Feb 16 08:43:48 GMT 2023","Thu Feb 16 08:43:48 GMT 2023","1","create a wallet","","","","","""after each"" hook for ""#1 确认助记词成功#成功创建账户""",""
+"broken","Thu Feb 16 08:46:48 GMT 2023","Thu Feb 16 08:46:48 GMT 2023","0","importWallet","","","","","""after each"" hook for ""#1 输入正确的助记词 # 导入账户成功 """,""
+"broken","Thu Feb 16 08:43:48 GMT 2023","Thu Feb 16 08:46:48 GMT 2023","180104","importWallet","","","","","#1 输入正确的助记词 # 导入账户成功 ",""
+"broken","Thu Feb 16 08:40:48 GMT 2023","Thu Feb 16 08:43:48 GMT 2023","180076","create a wallet","","","","","#1 确认助记词成功#成功创建账户",""

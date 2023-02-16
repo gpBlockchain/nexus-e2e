@@ -1,0 +1,1 @@
+{"total":2,"items":[{"uid":"0235b89011fddd786ef65382dda92648","name":"create a wallet","statistic":{"failed":0,"broken":2,"skipped":0,"passed":0,"unknown":0,"total":2}},{"uid":"c2646ab035d4ccc05ea141091d43ca50","name":"importWallet","statistic":{"failed":0,"broken":2,"skipped":0,"passed":0,"unknown":0,"total":2}}]}
