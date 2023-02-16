@@ -38,9 +38,14 @@ jobs:
           cd packages/e2e
           npm i
           xvfb-run --auto-servernum npm run test
-          mkdir report
-          tar -zcvf report/allure-results.tar.gz allure-results
           cd ../../
+
+      - name: package report
+        id: package
+        if: success() || failure()
+        run: |
+          mkdir packages/e2e/report
+          tar -zcvf packages/e2e/report/allure-results.tar.gz allure-results
       - name: Publish e2e test report
         if: success() || failure()
         uses: actions/upload-artifact@v2
