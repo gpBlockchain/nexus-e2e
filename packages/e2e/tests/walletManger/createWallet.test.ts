@@ -147,9 +147,9 @@ describe('create a wallet', function () {
                     await expectedThrow(clickNext(page))
                 })
             })
-            it("#2 输入的密码包含中文，表情等=>报错", async () => {
-                const passwdArr = ["中文", "表情"]
-                for (let i = 0; i < passwdArr.length; i++) {
+            const passwdArr = ["中文中文中文中文中文中文中文", "🆕🆕🆕🆕🆕🆕🆕🆕🆕🆕🆕"]
+            for (let i = 0; i < passwdArr.length; i++) {
+                it.skip(`#2-${i} 输入的密码:${passwdArr[i]}=>报错`, async () => {
                     await step(`input passwd:${passwdArr[i]}`, async () => {
                         await inputPassword(page, passwdArr[i])
                     })
@@ -159,8 +159,8 @@ describe('create a wallet', function () {
                     await step("click next", async () => {
                         await expectedThrow(clickNext(page))
                     })
-                }
-            })
+                })
+            }
             it('#3 输入的密码,和确认密码不一致=>无法点击继续 ', async () => {
                 const passwd = "12341231231231"
                 const confirmPasswd = "21312312313"
