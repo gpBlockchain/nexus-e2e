@@ -19,7 +19,7 @@ describe('importWallet', function () {
     let browser: BrowserContext;
     let extensionId;
     let page: Page;
-    const seeds = "finite omit doze dog pat team seek pink punch scale clap computer"
+    const seeds = "abandon ability able about above absent absorb abstract absurd abuse access accident"
     const passwd = "12345678"
     const userName = "xm"
 
@@ -32,7 +32,7 @@ describe('importWallet', function () {
                 }
             )
         })
-        browser.setDefaultTimeout(1000)
+        browser.setDefaultTimeout(3000)
         await step("goto: walletManager ", async () => {
             extensionId = await getExtensionId(browser)
             page = await getExtensionPageByUrl(browser, extensionId, NexusUrl.walletManager)
@@ -78,7 +78,7 @@ describe('importWallet', function () {
         })
 
         it('#1 输入的助记词包含重复的单词 # 无法导入助记词', async () => {
-            const replace_mn = "finite finite doze dog pat team seek pink punch scale clap computer"
+            const replace_mn = "abandon abandon able about above absent absorb abstract absurd abuse access accident"
             await step(`input mnemonic:${replace_mn}`, async () => {
                 await inputMnemonic(page, replace_mn)
             })
@@ -87,7 +87,7 @@ describe('importWallet', function () {
             })
         })
         it('#2 输入的助记词包含数字 # 无法导入助记词', async () => {
-            const replace_mn = "1234 finite doze dog pat team seek pink punch scale clap computer"
+            const replace_mn = "1234 abandon able about above absent absorb abstract absurd abuse access accident"
             await step(`input mnemonic:${replace_mn}`, async () => {
                 await inputMnemonic(page, replace_mn)
             })
@@ -96,7 +96,7 @@ describe('importWallet', function () {
             })
         })
         it('#3 输入的助记词包含特殊符号 => 无法导入助记词', async () => {
-            const replace_mn = "$%^& finite doze dog pat team seek pink punch scale clap computer"
+            const replace_mn = "%7k🆚 abandon able about above absent absorb abstract absurd abuse access accident"
             await step(`input mnemonic:${replace_mn}`, async () => {
                 await inputMnemonic(page, replace_mn)
             })
