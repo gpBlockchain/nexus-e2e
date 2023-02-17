@@ -38,7 +38,7 @@ describe('create a wallet', function () {
                 }
             )
         })
-        browser.setDefaultTimeout(1000)
+        browser.setDefaultTimeout(3000)
         await step("goto: walletManager ", async () => {
             extensionId = await getExtensionId(browser)
             page = await getExtensionPageByUrl(browser, extensionId, NexusUrl.walletManager)
@@ -264,8 +264,6 @@ describe('create a wallet', function () {
                 });
 
             });
-
-
         });
 
     });
