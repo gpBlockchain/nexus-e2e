@@ -11902,8 +11902,8 @@ var SetPassword = function SetPassword(_ref) {
     name: "confirmPassword",
     rules: {
       required: true,
-      validate: function validate(password, formValue) {
-        return password === formValue.confirmPassword;
+      validate: function validate(confirmPassword, formValue) {
+        return confirmPassword === formValue.password;
       }
     },
     render: function render(_ref5) {
@@ -97892,7 +97892,7 @@ var vanilla = (createState) => {
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("df7e3f37b2459b2bfc83")
+/******/ 		__webpack_require__.h = () => ("cd7591cedbf61636dc4a")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
