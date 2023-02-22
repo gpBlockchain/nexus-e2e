@@ -2,7 +2,7 @@
   "name": "nexus-web",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gpblockchain.github.io/nexus-e2e/",
+  "homepage": "https://nexus-e2e-aqnnaei7d-gpblockchain.vercel.app/",
   "dependencies": {
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
