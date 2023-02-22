@@ -2,10 +2,10 @@ import {makeAutoObservable} from "mobx";
 
 
 class CkbOwnershipService {
-    getLiveCellsResponse
-    getUnusedLocksResponse
-    getUsedLocksResponse
-    signDataResponse
+    getLiveCellsResponse=""
+    getUnusedLocksResponse=""
+    getUsedLocksResponse=""
+    signDataResponse=""
 
     constructor() {
         makeAutoObservable(this)

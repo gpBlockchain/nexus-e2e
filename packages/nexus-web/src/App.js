@@ -4,6 +4,7 @@ import {useStore} from "./ckb";
 // ethereum.on('chainChanged', handleNewNetwork);
 const FULL_OWNERSHIP = "fullOwnership"
 const RULE_BASED_OWNERSHIP = "ruleBasedOwnership"
+
 function connectionSection(injectedCkbService) {
     // todo add monit network change
     // {
@@ -51,51 +52,52 @@ function connectionSection(injectedCkbService) {
     )
 }
 
-function getOwnershipByType(injectedCkbService,type){
+function getOwnershipByType(injectedCkbService, type) {
 
-    if(type === FULL_OWNERSHIP){
-        return injectedCkbService.fullOwnership
+    if (type === FULL_OWNERSHIP) {
+        return injectedCkbService.ckbProvider.fullOwnership
     }
-    if(type === RULE_BASED_OWNERSHIP){
-        return injectedCkbService.ruleBasedOwnership
+    if (type === RULE_BASED_OWNERSHIP) {
+        return injectedCkbService.ckbProvider.ruleBasedOwnership
     }
 
 }
 
-function getLiveCell( injectedCkbService,ownershipService,ownershipType) {
+function getLiveCell(injectedCkbService, ownershipService, ownershipType) {
 
     {
         // let rt = window.ckb.isEnabled()
         // console.log("rt:",rt)
     }
-        return (
-            <div id={`${ownershipType}-getLiveCell-form`}>
-                <h4>
-                    get Live Cell
-                </h4>
-                <input
-                    className="form-control"
-                    type="text"
-                    placeholder="payload"
-                    id={`${ownershipType}-getLiveCellInput`}
-                />
-                <button
-                    className="btn btn-primary btn-lg btn-block mb-3"
-                    id = {`${ownershipType}-getLiveCellButton`}
-                    onClick={() => ownershipService.getLiveCells(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-getLiveCellInput`).value)}
-                    disabled={!injectedCkbService.enableStatus}
-                >
-                    get Live Cell
-                </button>
-                <p className="info-text alert alert-secondary">
-                    getLiveCellResult: <span id={`${ownershipType}-getLiveCellResult`}>{ownershipService.getLiveCellsResponse}</span>
-                </p>
-            </div>
-        )
+    return (
+        <div id={`${ownershipType}-getLiveCell-form`}>
+            <h4>
+                get Live Cell
+            </h4>
+            <input
+                className="form-control"
+                type="text"
+                placeholder="payload"
+                id={`${ownershipType}-getLiveCellInput`}
+            />
+            <button
+                className="btn btn-primary btn-lg btn-block mb-3"
+                id={`${ownershipType}-getLiveCellButton`}
+                onClick={() => ownershipService.getLiveCells(getOwnershipByType(injectedCkbService, ownershipType), document.getElementById(`${ownershipType}-getLiveCellInput`).value)}
+                disabled={!injectedCkbService.enableStatus}
+            >
+                get Live Cell
+            </button>
+            <p className="info-text alert alert-secondary">
+                getLiveCellResult: <span
+                id={`${ownershipType}-getLiveCellResult`}>{ownershipService.getLiveCellsResponse}</span>
+            </p>
+        </div>
+    )
 
 }
 
-function getUsedLocks(injectedCkbService, ownershipService,ownershipType) {
+function getUsedLocks(injectedCkbService, ownershipService, ownershipType) {
     return (
         <div id={`${ownershipType}-getUsedLocks-form`}>
             <h4>get Used Locks</h4>
@@ -108,7 +110,7 @@ function getUsedLocks(injectedCkbService, ownershipService,ownershipType) {
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
                 id={`${ownershipType}-getUsedLocksButton`}
-                onClick={() => ownershipService.getUnusedLocks(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-getUsedLocksInput`).value)}
+                onClick={() => ownershipService.getUnusedLocks(getOwnershipByType(injectedCkbService, ownershipType), document.getElementById(`${ownershipType}-getUsedLocksInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >get Used Locks
             </button>
@@ -120,7 +122,7 @@ function getUsedLocks(injectedCkbService, ownershipService,ownershipType) {
     )
 }
 
-function signTransaction(injectedCkbService, ownershipService,ownershipType) {
+function signTransaction(injectedCkbService, ownershipService, ownershipType) {
     return (
         <div id={`${ownershipType}-signTransaction-form`}>
             <h4>signTransaction</h4>
@@ -133,7 +135,7 @@ function signTransaction(injectedCkbService, ownershipService,ownershipType) {
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
                 id={`${ownershipType}-signTransactionButton`}
-                onClick={() => ownershipType.signTransaction(getOwnershipByType(injectedCkbService,ownershipService), document.getElementById(`${ownershipType}-signTransactionInput`).value)}
+                onClick={() => ownershipType.signTransaction(getOwnershipByType(injectedCkbService, ownershipService), document.getElementById(`${ownershipType}-signTransactionInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >sign Transaction
             </button>
@@ -145,7 +147,7 @@ function signTransaction(injectedCkbService, ownershipService,ownershipType) {
     )
 }
 
-function signData(injectedCkbService, ownershipService,ownershipType) {
+function signData(injectedCkbService, ownershipService, ownershipType) {
     return (
         <div id={`${ownershipType}-signData-form`}>
             <h4>signData</h4>
@@ -158,7 +160,7 @@ function signData(injectedCkbService, ownershipService,ownershipType) {
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
                 id={`${ownershipType}-signDataButton`}
-                onClick={() => ownershipService.signData(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-signDataInput`).value)}
+                onClick={() => ownershipService.signData(getOwnershipByType(injectedCkbService, ownershipType), document.getElementById(`${ownershipType}-signDataInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >sign Data
             </button>
@@ -171,7 +173,7 @@ function signData(injectedCkbService, ownershipService,ownershipType) {
 }
 
 
-function getUnusedLocks(injectedCkbService, ownershipService,ownershipType) {
+function getUnusedLocks(injectedCkbService, ownershipService, ownershipType) {
     return (
         <div id={`${ownershipType}-getUnusedLocks-form`}>
             <h4>get Unused Locks</h4>
@@ -186,7 +188,7 @@ function getUnusedLocks(injectedCkbService, ownershipService,ownershipType) {
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
                 id={`${ownershipType}-getUnusedLocksButton`}
-                onClick={() => ownershipService.getUnusedLocks(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-getUnusedLocksInput`).value)}
+                onClick={() => ownershipService.getUnusedLocks(getOwnershipByType(injectedCkbService, ownershipType), document.getElementById(`${ownershipType}-getUnusedLocksInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >get Unused Locks Button
             </button>
@@ -209,13 +211,13 @@ function getFullOwnership(ownershipService, injectedCkbService) {
                         Full Ownership
                     </h3>
                     <hr/>
-                    {getLiveCell(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
+                    {getLiveCell(injectedCkbService, ownershipService, FULL_OWNERSHIP)}
                     <hr/>
-                    {getUnusedLocks(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
+                    {getUnusedLocks(injectedCkbService, ownershipService, FULL_OWNERSHIP)}
                     <hr/>
-                    {signTransaction(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
+                    {signTransaction(injectedCkbService, ownershipService, FULL_OWNERSHIP)}
                     <hr/>
-                    {signData(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
+                    {signData(injectedCkbService, ownershipService, FULL_OWNERSHIP)}
                 </div>
             </div>
         </div>
@@ -235,13 +237,13 @@ function getRuleBasedOwnership(ownershipService, injectedCkbService) {
                         Rule Based Ownership
                     </h4>
                     <hr/>
-                    {getLiveCell(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
+                    {getLiveCell(injectedCkbService, ownershipService, RULE_BASED_OWNERSHIP)}
                     <hr/>
-                    {getUnusedLocks(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
+                    {getUnusedLocks(injectedCkbService, ownershipService, RULE_BASED_OWNERSHIP)}
                     <hr/>
-                    {signTransaction(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
+                    {signTransaction(injectedCkbService, ownershipService, RULE_BASED_OWNERSHIP)}
                     <hr/>
-                    {signData(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
+                    {signData(injectedCkbService, ownershipService, RULE_BASED_OWNERSHIP)}
                 </div>
             </div>
         </div>
@@ -250,7 +252,7 @@ function getRuleBasedOwnership(ownershipService, injectedCkbService) {
 }
 
 function App() {
-    const {fullOwnership,ruleBasedOwnership, injectedCkbService} = useStore()
+    const {fullOwnership, ruleBasedOwnership, injectedCkbService} = useStore()
 
 
     return (
