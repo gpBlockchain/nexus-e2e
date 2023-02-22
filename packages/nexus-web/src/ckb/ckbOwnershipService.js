@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 
 
-class CkbProviderService {
+class CkbOwnershipService {
     getLiveCellsResponse
     getUnusedLocksResponse
     getUsedLocksResponse
@@ -15,28 +15,28 @@ class CkbProviderService {
         this.enableStatus = true
     }
 
-    async getLiveCells(ckb,payload)  {
+    async getLiveCells(ckbOwnership,payload)  {
         console.log('getLiveCells:',payload)
-        this.getLiveCellsResponse = await ckb.getLiveCells(payload)
+        this.getLiveCellsResponse = await ckbOwnership.getLiveCells(payload)
         // this.getLiveCellsResponse = "[" + this.getLiveCellsResponse + "]"
     }
 
-    async getUnusedLocks(ckb,change){
-        this.getUnusedLocksResponse = await ckb.getUnusedLocks({change:change})
+    async getUnusedLocks(ckbOwnership,change){
+        this.getUnusedLocksResponse = await ckbOwnership.getUnusedLocks({change:change})
     }
 
-    async getUsedLocks(ckb,cursor){
-        this.getUsedLocksResponse = await ckb.getUsedLocks({cursor:cursor})
+    async getUsedLocks(ckbOwnership,cursor){
+        this.getUsedLocksResponse = await ckbOwnership.getUsedLocks({cursor:cursor})
     }
 
-    async signTransaction(ckb,txStr){
-        this.signTransactionResponse = await ckb.signTransaction(
+    async signTransaction(ckbOwnership,txStr){
+        this.signTransactionResponse = await ckbOwnership.signTransaction(
             JSON.parse(txStr)
         )
     }
 
-    async signData(ckb,payload){
-        this.signDataResponse = await ckb.signData(payload)
+    async signData(ckbOwnership,payload){
+        this.signDataResponse = await ckbOwnership.signData(payload)
     }
 
 
@@ -54,7 +54,7 @@ class CkbProviderService {
 
 }
 
-export {CkbProviderService}
+export {CkbOwnershipService}
 
 
 // export interface Keyring {

@@ -11,8 +11,9 @@ export class InjectedCkbService {
     }
 
     enable = async () => {
-        this.ckbProvider = await window.ckb.enable()
-        this.enableStatus = await window.ckb.isEnabled()
+            this.ckbProvider = await window.ckb.enable()
+            await this.isEnable()
+
     }
 
     isEnable = async () => {

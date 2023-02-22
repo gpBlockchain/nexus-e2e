@@ -2,7 +2,8 @@ import {observer} from "mobx-react-lite";
 import {useStore} from "./ckb";
 
 // ethereum.on('chainChanged', handleNewNetwork);
-
+const FULL_OWNERSHIP = "fullOwnership"
+const RULE_BASED_OWNERSHIP = "ruleBasedOwnership"
 function connectionSection(injectedCkbService) {
     // todo add monit network change
     // {
@@ -50,15 +51,25 @@ function connectionSection(injectedCkbService) {
     )
 }
 
+function getOwnershipByType(injectedCkbService,type){
 
-function getLiveCell(ckbProvide, injectedCkbService,idPre) {
+    if(type === FULL_OWNERSHIP){
+        return injectedCkbService.fullOwnership
+    }
+    if(type === RULE_BASED_OWNERSHIP){
+        return injectedCkbService.ruleBasedOwnership
+    }
+
+}
+
+function getLiveCell( injectedCkbService,ownershipService,ownershipType) {
 
     {
-        let rt = window.ckb.enable
-        console.log("rt:",rt)
+        // let rt = window.ckb.isEnabled()
+        // console.log("rt:",rt)
     }
         return (
-            <div id={`${idPre}getLiveCell-form`}>
+            <div id={`${ownershipType}-getLiveCell-form`}>
                 <h4>
                     get Live Cell
                 </h4>
@@ -66,129 +77,129 @@ function getLiveCell(ckbProvide, injectedCkbService,idPre) {
                     className="form-control"
                     type="text"
                     placeholder="payload"
-                    id={`${idPre}getLiveCellInput`}
+                    id={`${ownershipType}-getLiveCellInput`}
                 />
                 <button
                     className="btn btn-primary btn-lg btn-block mb-3"
-                    id="getLiveCellButton"
-                    onClick={() => ckbProvide.getLiveCells(injectedCkbService.ckbProvider, document.getElementById("getLiveCellInput").value)}
+                    id = {`${ownershipType}-getLiveCellButton`}
+                    onClick={() => ownershipService.getLiveCells(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-getLiveCellInput`).value)}
                     disabled={!injectedCkbService.enableStatus}
                 >
                     get Live Cell
                 </button>
                 <p className="info-text alert alert-secondary">
-                    getLiveCellResult: <span id="getLiveCellResult">{ckbProvide.getLiveCellsResponse}</span>
+                    getLiveCellResult: <span id={`${ownershipType}-getLiveCellResult`}>{ownershipService.getLiveCellsResponse}</span>
                 </p>
             </div>
         )
 
 }
 
-function getUsedLocks(ckbProvide, injectedCkbService) {
+function getUsedLocks(injectedCkbService, ownershipService,ownershipType) {
     return (
-        <div id="getUsedLocks-form">
+        <div id={`${ownershipType}-getUsedLocks-form`}>
             <h4>get Used Locks</h4>
             <input
                 className="form-control"
                 type="text"
                 placeholder="payload"
-                id="getUsedLocksInput"
+                id={`${ownershipType}-getUsedLocksInput`}
             />
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
-                id="getUsedLocksButton"
-                onClick={() => ckbProvide.getUnusedLocks(injectedCkbService.ckbProvider, document.getElementById("getUsedLocksInput").value)}
+                id={`${ownershipType}-getUsedLocksButton`}
+                onClick={() => ownershipService.getUnusedLocks(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-getUsedLocksInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >get Used Locks
             </button>
             <p className="info-text alert alert-secondary">
                 getUsedLocksResult: <span
-                id="getUsedLocksResult">{ckbProvide.getUsedLocksResponse}</span>
+                id={`${ownershipType}-getUsedLocksResult`}>{ownershipService.getUsedLocksResponse}</span>
             </p>
         </div>
     )
 }
 
-function signTransaction(ckbProvide, injectedCkbService) {
+function signTransaction(injectedCkbService, ownershipService,ownershipType) {
     return (
-        <div id="signTransaction-form">
+        <div id={`${ownershipType}-signTransaction-form`}>
             <h4>signTransaction</h4>
             <input
                 className="form-control"
                 type="text"
                 placeholder="payload"
-                id="signTransactionInput"
+                id={`${ownershipType}-signTransactionInput`}
             />
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
-                id="signTransactionButton"
-                onClick={() => ckbProvide.signTransaction(injectedCkbService.ckbProvider, document.getElementById("signTransactionInput").value)}
+                id={`${ownershipType}-signTransactionButton`}
+                onClick={() => ownershipType.signTransaction(getOwnershipByType(injectedCkbService,ownershipService), document.getElementById(`${ownershipType}-signTransactionInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >sign Transaction
             </button>
             <p className="info-text alert alert-secondary">
                 signTransactionResult: <span
-                id="signTransactionResult">{ckbProvide.signTransactionResponse}</span>
+                id={`${ownershipType}-signTransactionResult`}>{ownershipService.signTransactionResponse}</span>
             </p>
         </div>
     )
 }
 
-function signData(ckbProvide, injectedCkbService) {
+function signData(injectedCkbService, ownershipService,ownershipType) {
     return (
-        <div id="signData-form">
+        <div id={`${ownershipType}-signData-form`}>
             <h4>signData</h4>
             <input
                 className="form-control"
                 type="text"
                 placeholder="payload"
-                id="signDataInput"
+                id={`${ownershipType}-signDataInput`}
             />
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
-                id="signDataButton"
-                onClick={() => ckbProvide.signData(injectedCkbService.ckbProvider, document.getElementById("signDataInput").value)}
+                id={`${ownershipType}-signDataButton`}
+                onClick={() => ownershipService.signData(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-signDataInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >sign Data
             </button>
             <p className="info-text alert alert-secondary">
                 signDataInputResult: <span
-                id="signDataResult">{ckbProvide.signDataResponse}</span>
+                id={`${ownershipType}-signDataResult`}>{ownershipService.signDataResponse}</span>
             </p>
         </div>
     )
 }
 
 
-function getUnusedLocks(ckbProvide, injectedCkbService) {
+function getUnusedLocks(injectedCkbService, ownershipService,ownershipType) {
     return (
-        <div id="getUnusedLocks-form">
+        <div id={`${ownershipType}-getUnusedLocks-form`}>
             <h4>get Unused Locks</h4>
-            <label htmlFor="getUnusedLocksInput">change:</label><br/>
+            <label htmlFor={`${ownershipType}-getUnusedLocksInput`}>change:</label><br/>
             <input
                 className="form-control"
                 type="text"
                 placeholder="true"
-                id="getUnusedLocksInput"
+                id={`${ownershipType}-getUnusedLocksInput`}
             />
 
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
-                id="getUnusedLocksButton"
-                onClick={() => ckbProvide.getUnusedLocks(injectedCkbService.ckbProvider, document.getElementById("getUnusedLocksInput").value)}
+                id={`${ownershipType}-getUnusedLocksButton`}
+                onClick={() => ownershipService.getUnusedLocks(getOwnershipByType(injectedCkbService,ownershipType), document.getElementById(`${ownershipType}-getUnusedLocksInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >get Unused Locks Button
             </button>
             <p className="info-text alert alert-secondary">
                 getLiveCellsResponse: <span
-                id="getLiveCellsResponse">{ckbProvide.getLiveCellsResponse}</span>
+                id={`${ownershipType}-getLiveCellsResponse`}>{ownershipType.getLiveCellsResponse}</span>
             </p>
         </div>
 
     )
 }
 
-function getFullOwnership(ckbProvide, injectedCkbService) {
+function getFullOwnership(ownershipService, injectedCkbService) {
 
     return (
         <div className="d-flex align-items-stretch">
@@ -198,13 +209,13 @@ function getFullOwnership(ckbProvide, injectedCkbService) {
                         Full Ownership
                     </h3>
                     <hr/>
-                    {getLiveCell(injectedCkbService, ckbProvide,"full-ownership")}
+                    {getLiveCell(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
                     <hr/>
-                    {getUnusedLocks(injectedCkbService, ckbProvide)}
+                    {getUnusedLocks(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
                     <hr/>
-                    {signTransaction(injectedCkbService, ckbProvide)}
+                    {signTransaction(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
                     <hr/>
-                    {signData(injectedCkbService, ckbProvide)}
+                    {signData(injectedCkbService, ownershipService,FULL_OWNERSHIP)}
                 </div>
             </div>
         </div>
@@ -213,7 +224,7 @@ function getFullOwnership(ckbProvide, injectedCkbService) {
 }
 
 
-function getRuleBasedOwnership(ckbProvide, injectedCkbService) {
+function getRuleBasedOwnership(ownershipService, injectedCkbService) {
     return (
         <div
             className=" col-lg d-flex align-items-stretch"
@@ -224,13 +235,13 @@ function getRuleBasedOwnership(ckbProvide, injectedCkbService) {
                         Rule Based Ownership
                     </h4>
                     <hr/>
-                    {getLiveCell(injectedCkbService, ckbProvide,"rule-based")}
+                    {getLiveCell(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
                     <hr/>
-                    {getUnusedLocks(injectedCkbService, ckbProvide)}
+                    {getUnusedLocks(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
                     <hr/>
-                    {signTransaction(injectedCkbService, ckbProvide)}
+                    {signTransaction(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
                     <hr/>
-                    {signData(injectedCkbService, ckbProvide)}
+                    {signData(injectedCkbService, ownershipService,RULE_BASED_OWNERSHIP)}
                 </div>
             </div>
         </div>
@@ -239,7 +250,7 @@ function getRuleBasedOwnership(ckbProvide, injectedCkbService) {
 }
 
 function App() {
-    const {ckbProvide, injectedCkbService} = useStore()
+    const {fullOwnership,ruleBasedOwnership, injectedCkbService} = useStore()
 
 
     return (
@@ -251,11 +262,10 @@ function App() {
             <div>
                 <section>
                     <div className="row">
-                        {getFullOwnership(ckbProvide, injectedCkbService)}
-                        {getRuleBasedOwnership(ckbProvide, injectedCkbService)}
+                        {getFullOwnership(fullOwnership, injectedCkbService)}
+                        {getRuleBasedOwnership(ruleBasedOwnership, injectedCkbService)}
                     </div>
                 </section>
-
             </div>
 
         </div>
