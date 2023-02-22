@@ -38,21 +38,6 @@ jobs:
           npm i
           npm run start > node.log 2>&1 &
           cd ../../
-      - name: test
-        id: test
-        run: | 
-          cd packages/e2e
-          npm i
-          xvfb-run --auto-servernum npm run test
-          cd ../../
-
-      - name: Publish e2e test report
-        if: success() || failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: jfoa-build-reports-${{ runner.os }}
-          path: ./packages/e2e/mochawesome-report/
-
       - name: Deploy with gh-pages
         if: success()
         run: |

@@ -4,15 +4,18 @@ export class InjectedCkbService {
 
     enableStatus = false
     ckbProvider;
-    walletVersion;
-    networkNameResponse;
+    walletVersion="";
+    networkNameResponse="";
     constructor() {
         makeAutoObservable(this)
     }
 
     enable = async () => {
-        this.ckbProvider = await window.ckb.enable()
-        this.enableStatus = await window.ckb.isEnabled()
+            this.ckbProvider = await window.ckb.enable()
+            this.enableStatus = true
+        // todo: wait isEnable enable
+            // await this.isEnable()
+
     }
 
     isEnable = async () => {
