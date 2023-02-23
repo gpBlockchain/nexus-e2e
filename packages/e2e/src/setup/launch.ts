@@ -2,11 +2,12 @@ import {NexusLaunchOptions} from "../types";
 
 import {chromium} from "playwright-core";
 import {BrowserContext} from "playwright";
+import {PreloadJsContext} from "../nexus/servicer/provider";
 
 export async function launchWithNexus(
     option: NexusLaunchOptions
 ): Promise<BrowserContext> {
-    return await chromium.launchPersistentContext("tmp", {
+    const browserContext =  await chromium.launchPersistentContext("tmp", {
         headless: false,
         args: [
             `--disable-extensions-except=${option.nexusPath}`,
@@ -19,6 +20,8 @@ export async function launchWithNexus(
         // //     size: { width: 640, height: 480 },
         // // }
         ...option.playwrightOptions
-    });
+    })
+    await browserContext.addInitScript({content:PreloadJsContext})
+    return browserContext
 }
 

@@ -8,6 +8,7 @@ export type NexusLaunchOptions = {
 }
 
 export type NexusSetUpOptions = {
+    mock?:boolean
     userName: string
     passwd: string
     seed?: string
@@ -25,7 +26,7 @@ export type WalletManagerHelper = {
 }
 export type NexusWallet = {
     popup: PopupPageHelper;
-    approve: () => void;
+    approve: (passwd:string) => void;
     connect: () => void;
     cancel: () => void;
     walletManager: WalletManagerHelper;
