@@ -1,7 +1,6 @@
 import {NexusWallet, PopupPageHelper, WalletManagerHelper} from "../types";
 import {NexusUrl} from "./const";
 
-import {NotificationPageTextInfo} from "./page/notification-page";
 import {BrowserContext, Page} from "playwright";
 
 import {
@@ -12,7 +11,6 @@ import {
 import {clickConfirm, clickImportWallet, inputMnemonic} from "./helper/importWallet";
 import {Sleep} from "./util/helper";
 import {
-    clickAgreeTermsOfUse,
     clickDone,
     clickGetStarted, clickNext,
     inputConfirmPassword, inputPassword,
