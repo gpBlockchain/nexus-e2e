@@ -18,7 +18,12 @@ import {
     inputConfirmPassword, inputPassword,
     inputUserName
 } from "./helper/walletManager";
-
+import {
+    checkPasswordIsHide,
+    clickApprove,
+    clickCancel, clickConnect,
+    inputPassword as notionInputPassword
+} from "./helper/notification"
 
 export const EXTENSION_URL_PRE = "chrome-extension://"
 
@@ -70,7 +75,6 @@ class WalletManagerHelperImpl implements WalletManagerHelper {
         await clickNext(page)
         await inputPassword(page, password)
         await inputConfirmPassword(page, password)
-        await clickAgreeTermsOfUse(page)
         await clickNext(page)
         await inputUserName(page, userName)
         await clickNext(page)
@@ -86,7 +90,7 @@ export class Nexus implements NexusWallet {
     browser: BrowserContext
     popup: PopupPageHelper
     walletManager: WalletManagerHelper
-
+    defaultTimeout = 1000;
     constructor(browser: BrowserContext, extensionId: string) {
         this.browser = browser;
         this.extensionId = extensionId
@@ -95,22 +99,29 @@ export class Nexus implements NexusWallet {
     }
 
     close = () => close(this.browser, this.extensionId)
-    getNotificationPage = () => getNotificationPage(this.browser, this.extensionId, NexusUrl.notification)
+    getNotificationPage = (tryCount=5) => getNotificationPage(this.browser, this.extensionId, NexusUrl.notification,tryCount)
 
-    approve = async () => {
+    approve = async (passwd:string) => {
         const page = await this.getNotificationPage()
-        await page.getByRole('button', {name: NotificationPageTextInfo.Approve}).click()
+        if(!(await checkPasswordIsHide(page))){
+            await notionInputPassword(page,passwd)
+        }
+        await clickApprove(page)
     }
 
     cancel = async () => {
+
         const page = await this.getNotificationPage()
-        await page.getByRole('button', {name: NotificationPageTextInfo.Cancel}).click()
+        await clickCancel(page)
     }
 
     connect = async () => {
-        const page = await this.getNotificationPage()
-        await page.getByRole('button', {name: NotificationPageTextInfo.Connect}).click()
-
+        try {
+            const page = await this.getNotificationPage(1)
+            await clickConnect(page)
+        }catch (e){
+            // todo check connected
+        }
     }
 }
 
@@ -124,14 +135,20 @@ async function close(browser: BrowserContext, extensionId: string) {
 }
 
 
-export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string): Promise<Page> {
+export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string,tryCount:number): Promise<Page> {
     // wait extension page load
-    while (!browser.pages().some(page => page.url().includes(includeStr))) {
+    // todo : add timeout
+    for (let i = 0; i < 5; i++) {
+        if(browser.pages().some(page => page.url().includes(includeStr))){
+            return (browser.pages()).find(page => {
+                return page.url().includes(extensionId) && page.url().includes(includeStr)
+            });
+        }
         await Sleep(1000)
+
     }
-    return (browser.pages()).find(page => {
-        return page.url().includes(extensionId) && page.url().includes(includeStr)
-    });
+
+    throw new Error(`get Notification page time out:5000ms`)
 }
 
 
