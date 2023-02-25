@@ -1,4 +1,4 @@
-import {NexusWallet, PopupPageHelper, WalletManagerHelper} from "../types";
+import {AddNetworkOpt, NexusWallet, PopupPageHelper, WalletManagerHelper} from "../types";
 import {NexusUrl} from "./const";
 
 import {BrowserContext, Page} from "playwright";
@@ -22,6 +22,15 @@ import {
     clickCancel, clickConnect,
     inputPassword as notionInputPassword
 } from "./helper/notification"
+import {
+    clickAdd,
+    clickAddNetwork,
+    clickBack,
+    clickNetwork, clickSiteRemoveByIdx,
+    clickWhitelistSites, getConnectedStatus, getNetworkRadioGroup, getSiteList, getUserName,
+    inputName, inputSiteSearch,
+    inputUrl
+} from "./helper/popup";
 
 export const EXTENSION_URL_PRE = "chrome-extension://"
 
@@ -35,6 +44,69 @@ export class PopupPageHelperImpl implements PopupPageHelper {
     }
 
     getNewPage = () => getExtensionPageByUrl(this.browser, this.extensionId, NexusUrl.popup)
+
+    async addNetwork(addNetworkOpt: AddNetworkOpt) {
+        const page = await this.getNewPage()
+        await clickNetwork(page)
+        await clickAddNetwork(page)
+        await inputName(page,addNetworkOpt.name)
+        await inputUrl(page,addNetworkOpt.url)
+        await clickAdd(page)
+        // todo check
+        await clickBack(page)
+        await page.close()
+    }
+
+    async changeNetworkByName(name: string) {
+        const page = await this.getNewPage()
+        await clickNetwork(page)
+        await page.getByText(name,{exact:true}).click()
+        await clickBack(page)
+        await page.close()
+    }
+
+    async queryNetworkList(): Promise<string[]> {
+        const page = await this.getNewPage()
+        await clickNetwork(page)
+        const sites =  await getNetworkRadioGroup(page)
+        await page.close()
+        return sites
+    }
+
+    async  queryWhitelist(): Promise<string[]> {
+        const page = await this.getNewPage()
+        await clickWhitelistSites(page)
+        const sites = await getSiteList(page)
+        await page.close()
+        return sites;
+    }
+
+    async removeNetworkByName(name: string) {
+      //todo
+    }
+
+    async removeWhitelistBySearch(search: string) {
+        const page = await this.getNewPage()
+        await clickWhitelistSites(page)
+        await inputSiteSearch(page,search)
+        const siteList = await getSiteList(page)
+        if(siteList.length== 0){
+            return
+        }
+        await clickSiteRemoveByIdx(page,0)
+    }
+
+    async queryConnected(): Promise<boolean> {
+        const page = await this.getNewPage()
+        const ret = await getConnectedStatus(page)
+        return ret === "Connected";
+
+    }
+
+    async queryNickName(): Promise<string> {
+        const page = await this.getNewPage()
+        return await getUserName(page)
+    }
 }
 
 class WalletManagerHelperImpl implements WalletManagerHelper {
@@ -105,6 +177,7 @@ export class Nexus implements NexusWallet {
             await notionInputPassword(page,passwd)
         }
         await clickApprove(page)
+        await page.close()
     }
 
     cancel = async () => {
@@ -117,6 +190,7 @@ export class Nexus implements NexusWallet {
         try {
             const page = await this.getNotificationPage(1)
             await clickConnect(page)
+            await page.close()
         }catch (e){
             // todo check connected
         }

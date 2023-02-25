@@ -10,7 +10,7 @@ export async function inputPassword(page:Page,password:string){
     await getByTestId(page,SignMessagePageTestIdInfo.Password).type(password)
 }
 export async function checkPasswordIsHide(page:Page):Promise<boolean>{
-    return await getByTestId(page,SignMessagePageTestIdInfo.Password).isHidden()
+    return await getByTestId(page, SignMessagePageTestIdInfo.Password).isHidden();
 }
 
 export async function clickConnect(page:Page) {

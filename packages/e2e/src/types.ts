@@ -3,7 +3,7 @@ import {Logger} from "@playwright/test";
 
 
 export type NexusLaunchOptions = {
-    nexusPath: string
+    nexusPath: string;
     playwrightOptions?: playWrightLaunchOpt;
 }
 
@@ -14,8 +14,20 @@ export type NexusSetUpOptions = {
     seed?: string
 }
 
+export type AddNetworkOpt = {
+    name:string,
+    url:string,
+}
 export type PopupPageHelper = {
     getNewPage: () => Promise<Page>
+    queryWhitelist:()=>Promise<string[]>
+    removeWhitelistBySearch:(search:string)=>void
+    queryNetworkList:()=>Promise<string[]>
+    addNetwork:(addNetworkOpt:AddNetworkOpt)=>void
+    removeNetworkByName:(name:string)=>void
+    changeNetworkByName:(name:string)=>void
+    queryConnected:()=>Promise<boolean>
+    queryNickName:()=>Promise<string>
 }
 
 
