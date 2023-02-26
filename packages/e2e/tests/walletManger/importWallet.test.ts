@@ -4,7 +4,7 @@ import {launchWithNexus} from "../../src/setup/launch";
 import {getExtensionId} from "../../src/setup/setup";
 import {getExtensionPageByUrl} from "../../src/nexus";
 import {NexusUrl} from "../../src/nexus/const";
-import {expectedThrow, failedTestScreenshot, step} from "../utils/util";
+import {expectedThrow, failedTestScreenshot, getBrowserRandomUserPath, step} from "../utils/util";
 import {
     clickBack,
     clickDone,
@@ -29,7 +29,7 @@ describe('importWallet', function () {
             browser = await launchWithNexus(
                 {
                     nexusPath: "./build",
-                }
+                },getBrowserRandomUserPath()
             )
         })
         browser.setDefaultTimeout(3000)

@@ -3,18 +3,31 @@ import {Logger} from "@playwright/test";
 
 
 export type NexusLaunchOptions = {
-    nexusPath: string
+    nexusPath: string;
     playwrightOptions?: playWrightLaunchOpt;
 }
 
 export type NexusSetUpOptions = {
+    mock?:boolean
     userName: string
     passwd: string
     seed?: string
 }
 
+export type AddNetworkOpt = {
+    name:string,
+    url:string,
+}
 export type PopupPageHelper = {
     getNewPage: () => Promise<Page>
+    queryWhitelist:()=>Promise<string[]>
+    removeWhitelistBySearch:(search:string)=>void
+    queryNetworkList:()=>Promise<string[]>
+    addNetwork:(addNetworkOpt:AddNetworkOpt)=>void
+    removeNetworkByName:(name:string)=>void
+    changeNetworkByName:(name:string)=>void
+    queryConnected:()=>Promise<boolean>
+    queryNickName:()=>Promise<string>
 }
 
 
@@ -25,7 +38,7 @@ export type WalletManagerHelper = {
 }
 export type NexusWallet = {
     popup: PopupPageHelper;
-    approve: () => void;
+    approve: (passwd:string) => void;
     connect: () => void;
     cancel: () => void;
     walletManager: WalletManagerHelper;

@@ -4,7 +4,7 @@ import {getExtensionId} from "../../src/setup/setup";
 import {getExtensionPageByUrl} from "../../src/nexus";
 import {NexusUrl} from "../../src/nexus/const";
 
-import {attachMessage, expectedThrow, failedTestScreenshot, step} from "../utils/util";
+import {attachMessage, expectedThrow, failedTestScreenshot, getBrowserRandomUserPath, step} from "../utils/util";
 import {expect} from "chai";
 import {
     clickClipboardAndGet,
@@ -34,8 +34,7 @@ describe('create a wallet', function () {
             browser = await launchWithNexus(
                 {
                     nexusPath: "./build",
-
-                }
+                },getBrowserRandomUserPath()
             )
         })
         browser.setDefaultTimeout(3000)
@@ -270,6 +269,7 @@ describe('create a wallet', function () {
 
     afterEach(async () => {
         await failedTestScreenshot(this, browser)
+        await browser.clearCookies()
         await browser.close()
     })
 });
