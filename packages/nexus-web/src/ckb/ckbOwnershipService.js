@@ -36,6 +36,7 @@ class CkbOwnershipService {
     }
 
     async signData(ckbOwnership,payload){
+        payload = JSON.parse(payload)
         this.signDataResponse = await ckbOwnership.signData(payload)
     }
 
