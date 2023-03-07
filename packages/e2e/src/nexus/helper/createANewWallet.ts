@@ -20,7 +20,7 @@ export async function getSeeds(page: Page): Promise<string[]> {
 // full seed
 export async function fullCheckSeeds(page: Page, seedArr: string[]) {
     for (let i = 0; i < seedArr.length; i++) {
-        await page.getByRole('button', {name: seedArr[i]}).click()
+        await page.getByRole('button', {name: seedArr[i],exact:true}).click()
     }
 }
 

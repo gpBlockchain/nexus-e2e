@@ -8,6 +8,9 @@ export async function setUpNexus(browser: BrowserContext, nexusSetUpOptions: Nex
     let nex: NexusWallet
     nex = new Nexus(browser, await getExtensionId(browser))
 
+    if(nexusSetUpOptions.mock == true){
+        return nex;
+    }
     const managePage = await nex.walletManager.getNewPage()
 
     if (nexusSetUpOptions.seed != undefined) {

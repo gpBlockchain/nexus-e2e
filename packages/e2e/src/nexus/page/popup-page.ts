@@ -8,9 +8,9 @@ export const HomePageTestIdInfo = {
      * test-id: network, a button, the entry of network config
      */
     ConnectedStatus: 'connectedStatus',
-    WhitelistSites: 'whiteListSites',
-    Network: 'network'
-
+    WhitelistSites: 'whitelistSites',
+    Network: 'network',
+    UserName:'username'
 }
 
 export const WhitelistSitesPageTestIdInfo = {
@@ -26,11 +26,16 @@ export const WhitelistSitesPageTestIdInfo = {
      * text-id: website.delete#n, the website nth item's delete button
      */
     Back: 'back',
-    WebsiteSearch: 'websiteSearch',
-    WebsiteList: 'websiteList',
+    WebsiteSearch: 'siteSearch',
+    WebsiteList: 'siteList',
     getWebsiteByIdx: (num: number) => `website#${num}`,
     getUrlByIdx: (num: number) => `website.text#${num}`,
-    getDeleteByIdx: (num: number) => `website.delete#${num}`,
+    getDeleteByIdx: (num: number) => `site\[${num}\].remove`,
+}
+
+export const NetworksPageTextInfo = {
+    Name:"Name",
+    Url:"URL"
 }
 
 export const NetworksPageTestIdInfo = {
@@ -44,10 +49,11 @@ export const NetworksPageTestIdInfo = {
      * test-id: addNetwork: go to add network button
      *
      */
-    NetworkRadioGroup: 'networkRadioGroup',
+    NetworkRadioGroup: 'networkRadio',
     getNetworkRadioByIdx: (num: number) => `networkRadio#${num}`,
     getNetworkRadioName: (num: number) => `networkRadio.name#${num}`,
-    AddNetwork: 'addNetwork'
+    AddNetwork: 'addNetwork',
+    Add:"add"
 }
 
 

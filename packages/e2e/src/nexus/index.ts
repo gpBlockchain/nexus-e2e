@@ -1,7 +1,6 @@
-import {NexusWallet, PopupPageHelper, WalletManagerHelper} from "../types";
+import {AddNetworkOpt, NexusWallet, PopupPageHelper, WalletManagerHelper} from "../types";
 import {NexusUrl} from "./const";
 
-import {NotificationPageTextInfo} from "./page/notification-page";
 import {BrowserContext, Page} from "playwright";
 
 import {
@@ -12,13 +11,26 @@ import {
 import {clickConfirm, clickImportWallet, inputMnemonic} from "./helper/importWallet";
 import {Sleep} from "./util/helper";
 import {
-    clickAgreeTermsOfUse,
     clickDone,
     clickGetStarted, clickNext,
     inputConfirmPassword, inputPassword,
     inputUserName
 } from "./helper/walletManager";
-
+import {
+    checkPasswordIsHide,
+    clickApprove,
+    clickCancel, clickConnect,
+    inputPassword as notionInputPassword
+} from "./helper/notification"
+import {
+    clickAdd,
+    clickAddNetwork,
+    clickBack,
+    clickNetwork, clickSiteRemoveByIdx,
+    clickWhitelistSites, getConnectedStatus, getNetworkRadioGroup, getSiteList, getUserName,
+    inputName, inputSiteSearch,
+    inputUrl
+} from "./helper/popup";
 
 export const EXTENSION_URL_PRE = "chrome-extension://"
 
@@ -32,6 +44,69 @@ export class PopupPageHelperImpl implements PopupPageHelper {
     }
 
     getNewPage = () => getExtensionPageByUrl(this.browser, this.extensionId, NexusUrl.popup)
+
+    async addNetwork(addNetworkOpt: AddNetworkOpt) {
+        const page = await this.getNewPage()
+        await clickNetwork(page)
+        await clickAddNetwork(page)
+        await inputName(page,addNetworkOpt.name)
+        await inputUrl(page,addNetworkOpt.url)
+        await clickAdd(page)
+        // todo check
+        await clickBack(page)
+        await page.close()
+    }
+
+    async changeNetworkByName(name: string) {
+        const page = await this.getNewPage()
+        await clickNetwork(page)
+        await page.getByText(name,{exact:true}).click()
+        await clickBack(page)
+        await page.close()
+    }
+
+    async queryNetworkList(): Promise<string[]> {
+        const page = await this.getNewPage()
+        await clickNetwork(page)
+        const sites =  await getNetworkRadioGroup(page)
+        await page.close()
+        return sites
+    }
+
+    async  queryWhitelist(): Promise<string[]> {
+        const page = await this.getNewPage()
+        await clickWhitelistSites(page)
+        const sites = await getSiteList(page)
+        await page.close()
+        return sites;
+    }
+
+    async removeNetworkByName(name: string) {
+      //todo
+    }
+
+    async removeWhitelistBySearch(search: string) {
+        const page = await this.getNewPage()
+        await clickWhitelistSites(page)
+        await inputSiteSearch(page,search)
+        const siteList = await getSiteList(page)
+        if(siteList.length== 0){
+            return
+        }
+        await clickSiteRemoveByIdx(page,0)
+    }
+
+    async queryConnected(): Promise<boolean> {
+        const page = await this.getNewPage()
+        const ret = await getConnectedStatus(page)
+        return ret === "Connected";
+
+    }
+
+    async queryNickName(): Promise<string> {
+        const page = await this.getNewPage()
+        return await getUserName(page)
+    }
 }
 
 class WalletManagerHelperImpl implements WalletManagerHelper {
@@ -70,7 +145,6 @@ class WalletManagerHelperImpl implements WalletManagerHelper {
         await clickNext(page)
         await inputPassword(page, password)
         await inputConfirmPassword(page, password)
-        await clickAgreeTermsOfUse(page)
         await clickNext(page)
         await inputUserName(page, userName)
         await clickNext(page)
@@ -86,7 +160,7 @@ export class Nexus implements NexusWallet {
     browser: BrowserContext
     popup: PopupPageHelper
     walletManager: WalletManagerHelper
-
+    defaultTimeout = 1000;
     constructor(browser: BrowserContext, extensionId: string) {
         this.browser = browser;
         this.extensionId = extensionId
@@ -95,22 +169,31 @@ export class Nexus implements NexusWallet {
     }
 
     close = () => close(this.browser, this.extensionId)
-    getNotificationPage = () => getNotificationPage(this.browser, this.extensionId, NexusUrl.notification)
+    getNotificationPage = (tryCount=5) => getNotificationPage(this.browser, this.extensionId, NexusUrl.notification,tryCount)
 
-    approve = async () => {
+    approve = async (passwd:string) => {
         const page = await this.getNotificationPage()
-        await page.getByRole('button', {name: NotificationPageTextInfo.Approve}).click()
+        if(!(await checkPasswordIsHide(page))){
+            await notionInputPassword(page,passwd)
+        }
+        await clickApprove(page)
+        await page.close()
     }
 
     cancel = async () => {
+
         const page = await this.getNotificationPage()
-        await page.getByRole('button', {name: NotificationPageTextInfo.Cancel}).click()
+        await clickCancel(page)
     }
 
     connect = async () => {
-        const page = await this.getNotificationPage()
-        await page.getByRole('button', {name: NotificationPageTextInfo.Connect}).click()
-
+        try {
+            const page = await this.getNotificationPage(1)
+            await clickConnect(page)
+            await page.close()
+        }catch (e){
+            // todo check connected
+        }
     }
 }
 
@@ -124,14 +207,20 @@ async function close(browser: BrowserContext, extensionId: string) {
 }
 
 
-export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string): Promise<Page> {
+export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string,tryCount:number): Promise<Page> {
     // wait extension page load
-    while (!browser.pages().some(page => page.url().includes(includeStr))) {
+    // todo : add timeout
+    for (let i = 0; i < 5; i++) {
+        if(browser.pages().some(page => page.url().includes(includeStr))){
+            return (browser.pages()).find(page => {
+                return page.url().includes(extensionId) && page.url().includes(includeStr)
+            });
+        }
         await Sleep(1000)
+
     }
-    return (browser.pages()).find(page => {
-        return page.url().includes(extensionId) && page.url().includes(includeStr)
-    });
+
+    throw new Error(`get Notification page time out:5000ms`)
 }
 
 

@@ -15,17 +15,54 @@ export async function expectedThrow(promise: Promise<any>, msg = "") {
 
     expect.fail(` not expected happen, expected err:${msg}`)
 }
-
+const styles = [
+    'color：green',
+  'background：yellow',
+  'font-size：30px',
+  'border：1px solid red',
+  'text-shadow：2px 2px black',
+  'padding：10px',
+].join(';')
 export async function step(name: string, body: (step: StepInterface) => any): Promise<any> {
+    console.log(`\x1b[33m${name}\x1b[0m` );
     try {
         return await allure.step(name, body)
     } catch (TypeError) {
         if (TypeError.toString().includes("Cannot read properties of undefined (reading 'step')")) {
+
             return await wrap(body)()
         }
         throw TypeError
     }
 }
+function wrap<T>(fun: (...args: any[]) => T): any {
+    return (...args: any[]): T => {
+        let result;
+        try {
+            result = fun(args);
+        } catch (error) {
+            throw error;
+        }
+        if (isPromise(result)) {
+            const promise = result as any as Promise<any>;
+            return promise
+                .then((res) => {
+                    return res;
+                })
+                .catch((error) => {
+                    if (error) {
+                    }
+                    throw error;
+                }) as any as T;
+        } else {
+            return result;
+        }
+    };
+}
+
+const isPromise = (obj: any): boolean =>
+    !!obj && (typeof obj === "object" || typeof obj === "function") && typeof obj.then === "function";
+
 
 export async function failedTestScreenshot(suit: Suite, browser: BrowserContext) {
     if (suit.ctx.currentTest.state == "failed") {
@@ -62,32 +99,9 @@ export function attachMessage(name: string, content: string) {
     }
 }
 
-
-function wrap<T>(fun: (...args: any[]) => T): any {
-    return (...args: any[]): T => {
-        let result;
-        try {
-            result = fun(args);
-        } catch (error) {
-            throw error;
-        }
-        if (isPromise(result)) {
-            const promise = result as any as Promise<any>;
-            return promise
-                .then((res) => {
-                    return res;
-                })
-                .catch((error) => {
-                    if (error) {
-                    }
-                    throw error;
-                }) as any as T;
-        } else {
-            return result;
-        }
-    };
+export function getBrowserRandomUserPath(){
+    return `tmp/${getRandomStr()}`
 }
-
-const isPromise = (obj: any): boolean =>
-    !!obj && (typeof obj === "object" || typeof obj === "function") && typeof obj.then === "function";
-
+export function getRandomStr(){
+    return Math.random().toString(36).slice(-10);
+}
