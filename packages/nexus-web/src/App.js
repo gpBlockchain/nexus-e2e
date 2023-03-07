@@ -135,7 +135,7 @@ function signTransaction(injectedCkbService, ownershipService, ownershipType) {
             <button
                 className="btn btn-primary btn-lg btn-block mb-3"
                 id={`${ownershipType}-signTransactionButton`}
-                onClick={() => ownershipType.signTransaction(getOwnershipByType(injectedCkbService, ownershipService), document.getElementById(`${ownershipType}-signTransactionInput`).value)}
+                onClick={() => ownershipService.signTransaction(getOwnershipByType(injectedCkbService, ownershipType), document.getElementById(`${ownershipType}-signTransactionInput`).value)}
                 disabled={!injectedCkbService.enableStatus}
             >sign Transaction
             </button>
@@ -154,7 +154,7 @@ function signData(injectedCkbService, ownershipService, ownershipType) {
             <input
                 className="form-control"
                 type="text"
-                placeholder="payload"
+                placeholder='{"data":"0x1234"}'
                 id={`${ownershipType}-signDataInput`}
             />
             <button
