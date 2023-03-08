@@ -1,6 +1,5 @@
 import {makeAutoObservable} from "mobx";
 
-
 class CkbOwnershipService {
     getLiveCellsResponse=""
     getUnusedLocksResponse=""
@@ -31,7 +30,7 @@ class CkbOwnershipService {
 
     async signTransaction(ckbOwnership,txStr){
         this.signTransactionResponse = await ckbOwnership.signTransaction(
-            JSON.parse(txStr)
+            {transaction:JSON.parse(txStr)}
         )
     }
 
