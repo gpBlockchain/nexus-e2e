@@ -207,10 +207,10 @@ async function close(browser: BrowserContext, extensionId: string) {
 }
 
 
-export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string,tryCount:number): Promise<Page> {
+export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string,tryCount=10): Promise<Page> {
     // wait extension page load
     // todo : add timeout
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < tryCount; i++) {
         if(browser.pages().some(page => page.url().includes(includeStr))){
             return (browser.pages()).find(page => {
                 return page.url().includes(extensionId) && page.url().includes(includeStr)

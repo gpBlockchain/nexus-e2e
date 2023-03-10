@@ -11,7 +11,7 @@ import {
     clickWhitelistSites,
     getConnectedStatus,
     getSiteList,
-    getUserName, inputName, inputSiteSearch
+    inputName, inputSiteSearch
 } from "../../src/nexus/helper/popup";
 import {expect} from "chai";
 import {enableWallet, getWalletIsEnable} from "../../src/nexus/servicer/provider";
@@ -46,16 +46,10 @@ describe('popup', function () {
 
     it(`查询名字和 UserName:${UserName}一致`, async () => {
 
-        let queryUserName;
-        await step("query userName", async () => {
-            await step("get UserName", async () => {
-                queryUserName = await getUserName(page)
-                // remove hi,
-                queryUserName = queryUserName.replace("Hi, ", "")
+        await step(`query userName#userName should eq:${UserName}`, async () => {
+            await step(`get UserName eq:${UserName} `, async () => {
+                await page.getByText(UserName).innerText()
             })
-        })
-        await step(`userName should eq:${UserName}`, async () => {
-            expect(queryUserName).to.be.equal(UserName)
         })
     })
     it('没有连接网站时=>查询连接状态为未连接', async () => {
@@ -169,12 +163,12 @@ describe('popup', function () {
             })
             let ret;
             await step("sen ckb.enable", async () => {
-                ret =  enableWallet(newPage)
+                ret = enableWallet(newPage)
                 nexusWallet.connect()
                 await ret
                 console.log("ret:", await ret)
             })
-            await step("repload web",async ()=>{
+            await step("repload web", async () => {
                 await newPage.reload()
             })
             await step("sen ckb.enable again", async () => {
@@ -295,213 +289,213 @@ describe('popup', function () {
                 await clickNetwork(page)
             })
         })
-        it("点击返回按钮 => 返回成功",async ()=>{
-            await step("page url contains network",async ()=>{
+        it("点击返回按钮 => 返回成功", async () => {
+            await step("page url contains network", async () => {
                 expect(page.url()).to.be.include("network")
             })
-            await step("click back",async ()=>{
+            await step("click back", async () => {
                 await clickBack(page)
             })
-            await step("page url not contains network",async ()=>{
+            await step("page url not contains network", async () => {
                 expect(page.url()).to.be.not.include("network")
             })
 
         })
         describe('添加有效的network', function () {
-            let testCases:AddNetworkOpt[] = [
+            let testCases: AddNetworkOpt[] = [
                 {
-                    name:"nework为中文特殊符号",// network为中文
-                    url:"https://testnet.ckb.dev/"  // http
+                    name: "nework为中文特殊符号",// network为中文
+                    url: "https://testnet.ckb.dev/"  // http
                 },
                 {
-                    name:"nework为🧧中文特殊符号",// network为中文
-                    url:"https://testnet.ckb.dev/"  // http
+                    name: "nework为🧧中文特殊符号",// network为中文
+                    url: "https://testnet.ckb.dev/"  // http
                 },
                 {
-                    name:"1234", //数字
-                    url:"https://testnet.ckb.dev/",
+                    name: "1234", //数字
+                    url: "https://testnet.ckb.dev/",
                 },
                 {
-                    name:"longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong",
-                    url:"https://testnet.ckb.dev/"
+                    name: "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong",
+                    url: "https://testnet.ckb.dev/"
                 }
             ]
             for (let i = 0; i < testCases.length; i++) {
                 let testCase = testCases[i]
-                it(`${JSON.stringify(testCases)}`,async ()=>{
-                    await step("click addNetwork",async ()=>{
+                it(`${JSON.stringify(testCases)}`, async () => {
+                    await step("click addNetwork", async () => {
                         await clickAddNetwork(page)
                     })
-                    await step(`input name :${testCase.name}`,async ()=>{
-                        await inputName(page,testCase.name)
+                    await step(`input name :${testCase.name}`, async () => {
+                        await inputName(page, testCase.name)
                     })
-                    await step(`input url :${testCase.url}`,async ()=>{
-                        await inputName(page,testCase.url)
+                    await step(`input url :${testCase.url}`, async () => {
+                        await inputName(page, testCase.url)
                     })
-                    await step(`check name:${testCase.name} in network lists`,async ()=>{
+                    await step(`check name:${testCase.name} in network lists`, async () => {
                         //todo 添加断言
                         const networkList = await nexusWallet.popup.queryNetworkList()
-                        console.log("networkList:",networkList)
+                        console.log("networkList:", networkList)
                     })
                 })
 
             }
         });
-        it("添加已经存在的network名字的网络",async ()=>{
+        it("添加已经存在的network名字的网络", async () => {
             //todo
             let queryNetworkList
-            await step("query network list",async ()=>{
+            await step("query network list", async () => {
                 queryNetworkList = await nexusWallet.popup.queryNetworkList()
             })
             let addNetworkName = queryNetworkList[0]
-            await step(`add network use  Name:${addNetworkName} that is exist`,async ()=>{
+            await step(`add network use  Name:${addNetworkName} that is exist`, async () => {
                 await nexusWallet.popup.addNetwork({
-                    name:addNetworkName,
-                    url:"https://testnet.ckb.dev/"
+                    name: addNetworkName,
+                    url: "https://testnet.ckb.dev/"
                 })
             })
         })
-        it("添加不是ckb url的network",async ()=>{
+        it("添加不是ckb url的network", async () => {
             let addOpt = {
-                name:"test",
-                url:"https://www.baidu.com"
+                name: "test",
+                url: "https://www.baidu.com"
             }
-            await step("add network",async ()=>{
+            await step("add network", async () => {
                 await nexusWallet.popup.addNetwork(addOpt)
             })
-            await step("查询添加是否成功",async ()=>{
+            await step("查询添加是否成功", async () => {
                 //todo check 添加是否需要失败
                 const list = await nexusWallet.popup.queryNetworkList()
                 expect(list).to.be.equal(addOpt.name)
             })
         })
-        it("添加http 的ckb network",async ()=>{
+        it("添加http 的ckb network", async () => {
             let addOpt = {
-                name:"test1",
-                url:"http://info.cern.ch/"
+                name: "test1",
+                url: "http://info.cern.ch/"
             }
-            await step("add network",async ()=>{
+            await step("add network", async () => {
                 await nexusWallet.popup.addNetwork(addOpt)
             })
-            await step("查询添加是否成功",async ()=>{
+            await step("查询添加是否成功", async () => {
                 //todo check 添加是否需要失败
                 const list = await nexusWallet.popup.queryNetworkList()
                 expect(list).to.be.equal(addOpt.name)
             })
         })
-        it("添加localhost的network",async ()=>{
+        it("添加localhost的network", async () => {
             let addOpt = {
-                name:"test1",
-                url:"http://localhost:3000"
+                name: "test1",
+                url: "http://localhost:3000"
             }
-            await step("add network",async ()=>{
+            await step("add network", async () => {
                 await nexusWallet.popup.addNetwork(addOpt)
             })
-            await step("查询添加是否成功",async ()=>{
+            await step("查询添加是否成功", async () => {
                 //todo check 添加是否需要失败
                 const list = await nexusWallet.popup.queryNetworkList()
                 expect(list).to.be.equal(addOpt.name)
             })
         })
-        it("添加一个不可用的network",async ()=>{
+        it("添加一个不可用的network", async () => {
             let addOpt = {
-                name:"test1",
-                url:"http://localhost:4000"
+                name: "test1",
+                url: "http://localhost:4000"
             }
-            await step("add network",async ()=>{
+            await step("add network", async () => {
                 await nexusWallet.popup.addNetwork(addOpt)
             })
-            await step("查询添加是否成功",async ()=>{
+            await step("查询添加是否成功", async () => {
                 //todo check 添加是否需要失败
                 const list = await nexusWallet.popup.queryNetworkList()
                 expect(list).to.be.equal(addOpt.name)
             })
         })
-        it("切换network 同一网络",async ()=>{
+        it("切换network 同一网络", async () => {
             let newPage;
             let addTestNetOpt = {
-                name:"testCkbNet",
-                url:"https://testnet.ckb.dev/"
+                name: "testCkbNet",
+                url: "https://testnet.ckb.dev/"
             }
-            await step("add test net",async ()=>{
+            await step("add test net", async () => {
                 await nexusWallet.popup.addNetwork(addTestNetOpt)
             })
-            await step(`goto nexus web:${NEXUS_WEB_URL}`,async ()=>{
+            await step(`goto nexus web:${NEXUS_WEB_URL}`, async () => {
                 newPage = await browser.newPage()
                 newPage.goto(NEXUS_WEB_URL)
             })
-            await step("click connectButton",async ()=>{
+            await step("click connectButton", async () => {
                 await newPage.click("#connectButton")
             })
-            await step("connected web",async ()=>{
+            await step("connected web", async () => {
                 await nexusWallet.connect()
             })
-            await step("click network",async ()=>{
+            await step("click network", async () => {
                 await newPage.click("#getNetworkName")
             })
             let beforeNetworkResponse;
-            await step("get network response",async ()=>{
+            await step("get network response", async () => {
                 beforeNetworkResponse = await newPage.locator("#networkNameResponse").innerText()
             })
-            await step(`change network:${addTestNetOpt.name}`,async ()=>{
+            await step(`change network:${addTestNetOpt.name}`, async () => {
                 await nexusWallet.popup.changeNetworkByName(addTestNetOpt.name)
 
             })
-            await step(`click network`,async ()=>{
+            await step(`click network`, async () => {
                 await newPage.click("#getNetworkName")
             })
             let afterChangeNetworkResponse
-            await step("get network response",async ()=>{
+            await step("get network response", async () => {
                 afterChangeNetworkResponse = await newPage.locator("#networkNameResponse").innerText()
             })
-            await step("eq",async ()=>{
+            await step("eq", async () => {
                 expect(beforeNetworkResponse).to.be.equal(afterChangeNetworkResponse)
             })
         })
-        it("切换到不同网络",async ()=>{
+        it("切换到不同网络", async () => {
             //todo
             let newPage;
-            await step(`change network:ckb test `,async ()=>{
+            await step(`change network:ckb test `, async () => {
                 // await nexusWallet.popup.changeNetworkByName(addTestNetOpt.name)
                 await nexusWallet.popup.changeNetworkByName("CKB Testnet")
 
             })
-            await step(`goto nexus web:${NEXUS_WEB_URL}`,async ()=>{
+            await step(`goto nexus web:${NEXUS_WEB_URL}`, async () => {
                 newPage = await browser.newPage()
                 newPage.goto(NEXUS_WEB_URL)
             })
-            await step("click connectButton",async ()=>{
+            await step("click connectButton", async () => {
                 await newPage.click("#connectButton")
             })
-            await step("connected web",async ()=>{
+            await step("connected web", async () => {
                 await nexusWallet.connect()
             })
-            await step("click network",async ()=>{
+            await step("click network", async () => {
                 await newPage.click("#getNetworkName")
             })
             let beforeNetworkResponse;
-            await step("get network response",async ()=>{
+            await step("get network response", async () => {
                 beforeNetworkResponse = await newPage.locator("#networkNameResponse").innerText()
             })
-            await step(`change network:Ckb `,async ()=>{
+            await step(`change network:Ckb `, async () => {
                 // await nexusWallet.popup.changeNetworkByName(addTestNetOpt.name)
                 await nexusWallet.popup.changeNetworkByName("CKB")
 
             })
-            await step(`click network`,async ()=>{
+            await step(`click network`, async () => {
                 await newPage.click("#getNetworkName")
             })
             let afterChangeNetworkResponse
-            await step("get network response",async ()=>{
+            await step("get network response", async () => {
                 afterChangeNetworkResponse = await newPage.locator("#networkNameResponse").innerText()
             })
-            await step("not eq ",async ()=>{
+            await step("not eq ", async () => {
                 expect(beforeNetworkResponse).to.be.not.equal(afterChangeNetworkResponse)
             })
         })
-        it.skip("切换到坏掉的网络",async ()=>{
+        it.skip("切换到坏掉的网络", async () => {
             //todo
-            await step("添加一条坏掉的网络",async ()=>{
+            await step("添加一条坏掉的网络", async () => {
 
             })
 
@@ -509,7 +503,7 @@ describe('popup', function () {
         it.skip("删除当前没有连接的network")
         it.skip("删除当前正在连接的network")
 
-        it.skip("处于连接状态,将network全部删除",async ()=>{
+        it.skip("处于连接状态,将network全部删除", async () => {
             //todo 目前network 没有删除功能
         })
     });
