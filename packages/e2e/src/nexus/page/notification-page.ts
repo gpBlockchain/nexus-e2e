@@ -20,7 +20,19 @@ export const SignMessagePageTestIdInfo = {
     Password: 'password',
     SubmitPassword: 'submitPassword',
     Url: 'url',
-    Message: 'message'
+    Message: 'message',
+
+    TransactionInputs: 'transaction.inputs',
+    getTransactionInputByIdx: (idx: number) => `transaction.inputs[${idx}]`,
+    getTransactionInputAddressByIdx: (idx: number) => `transaction.inputs[${idx}].address`,
+    getTransactionInputTypeByIdx: (idx: number) => `transaction.inputs[${idx}].type`,
+    getTransactionInputCapacityByIdx: (idx: number) => `transaction.inputs[${idx}].capacity`,
+
+    TransactionOutputs: "transaction.outputs",
+    getTransactionOutPutByIdx: (idx: number) => `transaction.outputs[${idx}]`,
+    getTransactionOutputAddressByIdx: (idx: number) => `transaction.outputs[${idx}].address`,
+    getTransactionOutputTypeByIdx: (idx: number) => `transaction.outputs[${idx}].type`,
+    getTransactionOutputCapacityByIdx: (idx: number) => `transaction.outputs[${idx}].capacity`,
 
 }
 

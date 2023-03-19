@@ -34,7 +34,7 @@ describe('create a wallet', function () {
             browser = await launchWithNexus(
                 {
                     nexusPath: "./build",
-                },getBrowserRandomUserPath()
+                }, getBrowserRandomUserPath()
             )
         })
         browser.setDefaultTimeout(3000)

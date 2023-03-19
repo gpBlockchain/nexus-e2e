@@ -179,7 +179,7 @@ export async function ownershipGetLiveCells(page: Page, ownerShipType: OwnerShip
     }, obj)
 }
 
-export async function ownershipSignTransaction(page: Page, ownerShipType: OwnerShipType, payload: { tx: Transaction }) {
+export async function ownershipSignTransaction(page: Page, ownerShipType: OwnerShipType, payload: { transaction: Transaction }) {
     const obj = {type: ownerShipType, payload: payload}
     return await page.evaluate((obj) => {
         // @ts-ignore
