@@ -188,11 +188,12 @@ export class Nexus implements NexusWallet {
 
     connect = async () => {
         try {
-            const page = await this.getNotificationPage(1)
+            const page = await this.getNotificationPage(5)
             await clickConnect(page)
             await page.close()
         }catch (e){
             // todo check connected
+            console.log("may be connected")
         }
     }
 }
@@ -207,7 +208,7 @@ async function close(browser: BrowserContext, extensionId: string) {
 }
 
 
-export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string,tryCount=10): Promise<Page> {
+export async function getNotificationPage(browser: BrowserContext, extensionId: string, includeStr: string,tryCount=5): Promise<Page> {
     // wait extension page load
     // todo : add timeout
     for (let i = 0; i < tryCount; i++) {
